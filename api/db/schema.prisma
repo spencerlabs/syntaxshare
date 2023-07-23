@@ -4,14 +4,76 @@ datasource db {
 }
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = "native"
+  provider        = "prisma-client-js"
+  binaryTargets   = "native"
+  previewFeatures = ["extendedWhereUnique"]
 }
 
 model User {
-  id                  String    @id @default(uuid())
-  email               String    @unique
+  id                  String            @id @default(uuid())
+  email               String            @unique
   loginToken          String?
   loginTokenExpiresAt DateTime?
   salt                String?
+  workspaces          Workspace[]
+  workspaceSettings   WorkspaceSetting?
+  panelSettings       PanelSetting?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @default(now()) @updatedAt
+}
+
+model Workspace {
+  id         String            @id @default(cuid())
+  title      String
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  panels     Panel[]
+  settings   WorkspaceSetting?
+  visibility Visibility        @default(private)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @default(now()) @updatedAt
+}
+
+model WorkspaceSetting {
+  id           String     @id @default(cuid())
+  workspace    Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId  String?    @unique
+  user         User?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String?    @unique
+  size         String
+  handle       String
+  gradientFrom String
+  gradientTo   String?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @default(now()) @updatedAt
+}
+
+model Panel {
+  id          String        @id @default(cuid())
+  title       String?
+  workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  settings    PanelSetting?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+}
+
+model PanelSetting {
+  id           String   @id @default(cuid())
+  panel        Panel?   @relation(fields: [panelId], references: [id], onDelete: Cascade)
+  panelId      String?  @unique
+  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String?  @unique
+  language     String
+  code         String
+  codeSize     String
+  gradientFrom String
+  gradientTo   String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now()) @updatedAt
+}
+
+enum Visibility {
+  public
+  private
 }
