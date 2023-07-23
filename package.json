@@ -14,6 +14,7 @@
     "build": "rw build",
     "lint": "rw lint",
     "lint:fix": "rw lint --fix",
+    "types": "rw g types",
     "storybook": "rw storybook",
     "storybook:build": "rw storybook --build",
     "migrate": "rw prisma migrate dev",
@@ -23,7 +24,8 @@
     "cleanup": "rm -rf api/node_modules && rm -rf web/node_modules && rm -rf node_modules"
   },
   "devDependencies": {
-    "@redwoodjs/core": "5.4.3"
+    "@redwoodjs/core": "5.4.3",
+    "prettier-plugin-tailwindcss": "^0.4.1"
   },
   "eslintConfig": {
     "extends": "@redwoodjs/eslint-config",
