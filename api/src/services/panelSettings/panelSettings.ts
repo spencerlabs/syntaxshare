@@ -6,21 +6,22 @@ import type {
 
 import { db } from 'src/lib/db'
 
-export const panelSettings: QueryResolvers['panelSettings'] = () => {
-  return db.panelSetting.findMany()
-}
-
 export const panelSetting: QueryResolvers['panelSetting'] = ({ id }) => {
   return db.panelSetting.findUnique({
-    where: { id },
+    where: {
+      id,
+      panel: {
+        workspace: {
+          userId: context.currentUser.id,
+        },
+      },
+    },
   })
 }
 
-export const createPanelSetting: MutationResolvers['createPanelSetting'] = ({
-  input,
-}) => {
-  return db.panelSetting.create({
-    data: input,
+export const userPanelSetting: QueryResolvers['userPanelSetting'] = () => {
+  return db.panelSetting.findUnique({
+    where: { userId: context.currentUser.id },
   })
 }
 
@@ -28,17 +29,23 @@ export const updatePanelSetting: MutationResolvers['updatePanelSetting'] = ({
   id,
   input,
 }) => {
+  const userId = context.currentUser.id
+
   return db.panelSetting.update({
     data: input,
-    where: { id },
-  })
-}
-
-export const deletePanelSetting: MutationResolvers['deletePanelSetting'] = ({
-  id,
-}) => {
-  return db.panelSetting.delete({
-    where: { id },
+    where: {
+      id,
+      OR: [
+        { userId },
+        {
+          panel: {
+            workspace: {
+              userId,
+            },
+          },
+        },
+      ],
+    },
   })
 }
 

@@ -54,6 +54,7 @@ model Panel {
   workspace   Workspace     @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String
   settings    PanelSetting?
+  code        String
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @default(now()) @updatedAt
 }
@@ -65,7 +66,6 @@ model PanelSetting {
   user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId       String?  @unique
   language     String
-  code         String
   codeSize     String
   gradientFrom String
   gradientTo   String?

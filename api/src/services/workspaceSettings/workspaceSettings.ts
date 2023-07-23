@@ -6,37 +6,45 @@ import type {
 
 import { db } from 'src/lib/db'
 
-export const workspaceSettings: QueryResolvers['workspaceSettings'] = () => {
-  return db.workspaceSetting.findMany()
-}
-
 export const workspaceSetting: QueryResolvers['workspaceSetting'] = ({
   id,
 }) => {
   return db.workspaceSetting.findUnique({
-    where: { id },
+    where: {
+      id,
+      workspace: {
+        userId: context.currentUser.id,
+      },
+    },
   })
 }
 
-export const createWorkspaceSetting: MutationResolvers['createWorkspaceSetting'] =
-  ({ input }) => {
-    return db.workspaceSetting.create({
-      data: input,
+export const userWorkspaceSetting: QueryResolvers['userWorkspaceSetting'] =
+  () => {
+    return db.workspaceSetting.findUnique({
+      where: {
+        userId: context.currentUser.id,
+      },
     })
   }
 
 export const updateWorkspaceSetting: MutationResolvers['updateWorkspaceSetting'] =
   ({ id, input }) => {
+    const userId = context.currentUser.id
+
     return db.workspaceSetting.update({
       data: input,
-      where: { id },
-    })
-  }
-
-export const deleteWorkspaceSetting: MutationResolvers['deleteWorkspaceSetting'] =
-  ({ id }) => {
-    return db.workspaceSetting.delete({
-      where: { id },
+      where: {
+        id,
+        OR: [
+          { userId },
+          {
+            workspace: {
+              userId,
+            },
+          },
+        ],
+      },
     })
   }
 

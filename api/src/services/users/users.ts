@@ -10,32 +10,15 @@ import { UserInputError } from '@redwoodjs/graphql-server'
 import { db } from 'src/lib/db'
 import { sendEmail } from 'src/lib/email'
 
-export const users: QueryResolvers['users'] = () => {
-  return db.user.findMany()
-}
-
-export const user: QueryResolvers['user'] = ({ id }) => {
+export const user: QueryResolvers['user'] = () => {
   return db.user.findUnique({
-    where: { id },
+    where: { id: context.currentUser.id },
   })
 }
 
-export const createUser: MutationResolvers['createUser'] = ({ input }) => {
-  return db.user.create({
-    data: input,
-  })
-}
-
-export const updateUser: MutationResolvers['updateUser'] = ({ id, input }) => {
-  return db.user.update({
-    data: input,
-    where: { id },
-  })
-}
-
-export const deleteUser: MutationResolvers['deleteUser'] = ({ id }) => {
+export const deleteUser: MutationResolvers['deleteUser'] = () => {
   return db.user.delete({
-    where: { id },
+    where: { id: context.currentUser.id },
   })
 }
 

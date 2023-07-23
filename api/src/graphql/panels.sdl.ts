@@ -5,12 +5,13 @@ export const schema = gql`
     workspace: Workspace!
     workspaceId: String!
     settings: PanelSetting
+    code: String!
     createdAt: DateTime!
     updatedAt: DateTime!
   }
 
   type Query {
-    panels: [Panel!]! @requireAuth
+    panels(workspaceId: String!): [Panel!]! @requireAuth
     panel(id: String!): Panel @requireAuth
   }
 
@@ -21,7 +22,7 @@ export const schema = gql`
 
   input UpdatePanelInput {
     title: String
-    workspaceId: String
+    code: String
   }
 
   type Mutation {

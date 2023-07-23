@@ -23,13 +23,11 @@ export const schema = gql`
 
   input CreateWorkspaceInput {
     title: String!
-    userId: String!
     visibility: Visibility!
   }
 
   input UpdateWorkspaceInput {
     title: String
-    userId: String
     visibility: Visibility
   }
 

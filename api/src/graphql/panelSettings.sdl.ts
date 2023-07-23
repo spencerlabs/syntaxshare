@@ -6,7 +6,6 @@ export const schema = gql`
     user: User
     userId: String
     language: String!
-    code: String!
     codeSize: String!
     gradientFrom: String!
     gradientTo: String
@@ -15,37 +14,21 @@ export const schema = gql`
   }
 
   type Query {
-    panelSettings: [PanelSetting!]! @requireAuth
     panelSetting(id: String!): PanelSetting @requireAuth
-  }
-
-  input CreatePanelSettingInput {
-    panelId: String
-    userId: String
-    language: String!
-    code: String!
-    codeSize: String!
-    gradientFrom: String!
-    gradientTo: String
+    userPanelSetting: PanelSetting @requireAuth
   }
 
   input UpdatePanelSettingInput {
-    panelId: String
-    userId: String
     language: String
-    code: String
     codeSize: String
     gradientFrom: String
     gradientTo: String
   }
 
   type Mutation {
-    createPanelSetting(input: CreatePanelSettingInput!): PanelSetting!
-      @requireAuth
     updatePanelSetting(
       id: String!
       input: UpdatePanelSettingInput!
     ): PanelSetting! @requireAuth
-    deletePanelSetting(id: String!): PanelSetting! @requireAuth
   }
 `

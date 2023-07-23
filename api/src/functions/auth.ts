@@ -3,6 +3,7 @@ import type { APIGatewayProxyEvent, Context } from 'aws-lambda'
 import { DbAuthHandler, DbAuthHandlerOptions } from '@redwoodjs/auth-dbauth-api'
 
 import { db } from 'src/lib/db'
+import { workspaceSettings, panelSettings } from 'src/lib/defaultSettings'
 
 export const handler = async (
   event: APIGatewayProxyEvent,
@@ -127,6 +128,12 @@ export const handler = async (
           email: username,
           loginToken: hashedPassword,
           salt: null,
+          workspaceSettings: {
+            create: workspaceSettings,
+          },
+          panelSettings: {
+            create: panelSettings,
+          },
         },
       })
     },

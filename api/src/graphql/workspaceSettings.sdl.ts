@@ -14,22 +14,11 @@ export const schema = gql`
   }
 
   type Query {
-    workspaceSettings: [WorkspaceSetting!]! @requireAuth
     workspaceSetting(id: String!): WorkspaceSetting @requireAuth
-  }
-
-  input CreateWorkspaceSettingInput {
-    workspaceId: String
-    userId: String
-    size: String!
-    handle: String!
-    gradientFrom: String!
-    gradientTo: String
+    userWorkspaceSetting: WorkspaceSetting @requireAuth
   }
 
   input UpdateWorkspaceSettingInput {
-    workspaceId: String
-    userId: String
     size: String
     handle: String
     gradientFrom: String
@@ -37,13 +26,9 @@ export const schema = gql`
   }
 
   type Mutation {
-    createWorkspaceSetting(
-      input: CreateWorkspaceSettingInput!
-    ): WorkspaceSetting! @requireAuth
     updateWorkspaceSetting(
       id: String!
       input: UpdateWorkspaceSettingInput!
     ): WorkspaceSetting! @requireAuth
-    deleteWorkspaceSetting(id: String!): WorkspaceSetting! @requireAuth
   }
 `
