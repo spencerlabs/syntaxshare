@@ -2,6 +2,7 @@ import { Form, Label, TextField, Submit, FieldError } from '@redwoodjs/forms'
 import { routes, Link } from '@redwoodjs/router'
 import { MetaTags, useMutation } from '@redwoodjs/web'
 import { Toaster, toast } from '@redwoodjs/web/toast'
+
 const GENERATE_LOGIN_TOKEN = gql`
   mutation generateToken($email: String!) {
     generateToken(email: $email) {
