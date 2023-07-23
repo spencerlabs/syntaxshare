@@ -6,6 +6,22 @@
       "web"
     ]
   },
+  "scripts": {
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "dev": "yarn docker:down && yarn docker:up db && rw dev",
+    "test": "yarn docker:down && yarn docker:up db-test && rw test",
+    "build": "rw build",
+    "lint": "rw lint",
+    "lint:fix": "rw lint --fix",
+    "storybook": "rw storybook",
+    "storybook:build": "rw storybook --build",
+    "migrate": "rw prisma migrate dev",
+    "upgrade": "rw upgrade",
+    "api": "yarn workspace api",
+    "web": "yarn workspace web",
+    "cleanup": "rm -rf api/node_modules && rm -rf web/node_modules && rm -rf node_modules"
+  },
   "devDependencies": {
     "@redwoodjs/core": "5.4.3"
   },
