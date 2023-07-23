@@ -1,5 +1,9 @@
 import CryptoJS from 'crypto-js'
-import type { QueryResolvers, MutationResolvers } from 'types/graphql'
+import type {
+  QueryResolvers,
+  MutationResolvers,
+  UserRelationResolvers,
+} from 'types/graphql'
 
 import { UserInputError } from '@redwoodjs/graphql-server'
 
@@ -91,4 +95,16 @@ export const generateToken = async ({ email }) => {
     console.log({ error })
     throw new UserInputError(error.message)
   }
+}
+
+export const User: UserRelationResolvers = {
+  workspaces: (_obj, { root }) => {
+    return db.user.findUnique({ where: { id: root?.id } }).workspaces()
+  },
+  workspaceSettings: (_obj, { root }) => {
+    return db.user.findUnique({ where: { id: root?.id } }).workspaceSettings()
+  },
+  panelSettings: (_obj, { root }) => {
+    return db.user.findUnique({ where: { id: root?.id } }).panelSettings()
+  },
 }

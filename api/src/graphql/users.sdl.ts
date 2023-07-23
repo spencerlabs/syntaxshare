@@ -2,6 +2,11 @@ export const schema = gql`
   type User {
     id: String!
     email: String!
+    workspaces: [Workspace]!
+    workspaceSettings: WorkspaceSetting
+    panelSettings: PanelSetting
+    createdAt: DateTime!
+    updatedAt: DateTime!
   }
 
   type Query {

@@ -3,8 +3,8 @@ import type { ScenarioData } from '@redwoodjs/testing/api'
 
 export const standard = defineScenario<Prisma.UserCreateArgs>({
   user: {
-    one: { data: { email: 'String1640321', loginToken: 'String' } },
-    two: { data: { email: 'String8414764', loginToken: 'String' } },
+    one: { data: { email: 'String7468351' } },
+    two: { data: { email: 'String9221848' } },
   },
 })
 
