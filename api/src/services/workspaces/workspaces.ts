@@ -59,7 +59,7 @@ export const createWorkspace: MutationResolvers['createWorkspace'] = async ({
             create: {
               ...panelSettings,
               gradientFrom:
-                userSettings.gradientFrom || panelSettings.gradientFrom,
+                userSettings?.gradientFrom || panelSettings.gradientFrom,
             },
           },
         },

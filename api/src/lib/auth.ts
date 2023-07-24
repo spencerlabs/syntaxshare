@@ -1,12 +1,13 @@
 import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 
 import { db } from './db'
+import { workspaceSettings, panelSettings } from './defaultSettings'
 
 /**
  * Represents the user attributes returned by the decoding the
  * Authentication provider's JWT together with an optional list of roles.
  */
-type RedwoodUser = Record<string, unknown> & { roles?: string[] }
+type RedwoodUser = { id: string; email: string } & { roles?: string[] }
 
 /**
  * getCurrentUser returns the user information together with
@@ -53,6 +54,12 @@ export const getCurrentUser = async (
     user = await db.user.create({
       data: {
         email,
+        workspaceSettings: {
+          create: workspaceSettings,
+        },
+        panelSettings: {
+          create: panelSettings,
+        },
       },
       select: {
         id: true,

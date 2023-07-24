@@ -8,8 +8,7 @@ const Routes = () => {
     <Router useAuth={useAuth}>
       <Set wrap={AppLayout}>
         <Set private unauthenticated="login">
-          <Route path="/workspaces/{id}" page={WorkspacePage} name="workspace" />
-          <Route path="/workspaces" page={WorkspacesPage} name="workspaces" />
+          <Route path="/{id}" page={WorkspacePage} name="workspace" />
         </Set>
         <Route path="/login" page={LoginPage} name="login" prerender />
         <Route path="/" page={HomePage} name="home" />
