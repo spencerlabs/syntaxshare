@@ -2,8 +2,14 @@
 module.exports = {
   content: ['src/**/*.{js,jsx,ts,tsx}'],
   theme: {
-    extend: {},
+    extend: {
+      fontSize: {
+        '2xs': ['0.625rem', '1rem'],
+      },
+      spacing: {
+        wrap: '5.62vw',
+      },
+    },
   },
   plugins: [],
 }
-

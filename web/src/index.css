@@ -1,3 +1,36 @@
 @import 'tailwindcss/base';
+
+html, body {
+  @apply h-full w-full bg-stone-900 text-stone-200;
+}
+
+#redwood-app {
+  @apply flex flex-col min-h-full w-full;
+}
+
+a {
+  @apply hover:text-emerald-500 transition-colors duration-300;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold font-mono;
+}
+
+h1 {
+  @apply text-3xl;
+}
+
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+[class*="transition-"] {
+  @apply duration-300;
+}
+
+[data-reach-skip-link]:focus {
+  @apply bg-stone-900 font-semibold;
+}
+
+.font-mono {
+  word-spacing: -0.1rem;
+}

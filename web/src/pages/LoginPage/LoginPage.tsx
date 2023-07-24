@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 
-import { useLocation } from '@redwoodjs/router'
+import { Link, navigate, routes, useLocation } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
+import { useAuth } from 'src/auth'
 import LoginPasswordlessForm from 'src/components/LoginPasswordlessForm/LoginPasswordlessForm'
 import LoginPasswordlessTokenForm from 'src/components/LoginPasswordlessTokenForm/LoginPasswordlessTokenForm'
 
@@ -10,8 +11,12 @@ const LoginPage = () => {
   const [waitingForCode, setWaitingForCode] = useState(false)
   const [email, setEmail] = useState('')
   const [code, setCode] = useState('')
+
+  const { isAuthenticated } = useAuth()
+
   // onload set email from query string
   const { search } = useLocation()
+
   useEffect(() => {
     const params = new URLSearchParams(search)
     // decode magic param
@@ -27,27 +32,46 @@ const LoginPage = () => {
     }
   }, [search])
 
-  return (
-    <>
-      <MetaTags
-        title="LoginPasswordless"
-        description="LoginPasswordless page"
-      />
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(routes.home())
+    }
+  }, [isAuthenticated])
 
-      {!waitingForCode && (
-        <LoginPasswordlessForm
-          setWaitingForCode={setWaitingForCode}
-          setEmail={setEmail}
-        />
-      )}
-      {waitingForCode && (
-        <LoginPasswordlessTokenForm
-          email={email}
-          setWaitingForCode={setWaitingForCode}
-          code={code}
-        />
-      )}
-    </>
+  return (
+    <div className="mx-auto max-w-sm">
+      <MetaTags title="Login" />
+
+      <header className="mb-4 text-center">
+        <h1>Log In</h1>
+      </header>
+
+      <div className="block rounded-md bg-stone-700 p-4">
+        {!waitingForCode && (
+          <LoginPasswordlessForm
+            setWaitingForCode={setWaitingForCode}
+            setEmail={setEmail}
+          />
+        )}
+        {waitingForCode && (
+          <LoginPasswordlessTokenForm
+            email={email}
+            setWaitingForCode={setWaitingForCode}
+            code={code}
+          />
+        )}
+      </div>
+
+      <p className="mt-2 text-center text-sm">
+        <span>{"Don't have an account?"}</span>{' '}
+        <Link
+          to={routes.signup()}
+          className="font-semibold text-emerald-500 hover:text-emerald-400"
+        >
+          Sign up!
+        </Link>
+      </p>
+    </div>
   )
 }
 

@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { Form, Label, TextField, FieldError, Submit } from '@redwoodjs/forms'
 import { Link, RouteFocus, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
-import { toast, Toaster } from '@redwoodjs/web/toast'
+import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 
@@ -48,62 +48,56 @@ const SignupPage = () => {
   }
 
   return (
-    <>
-      <MetaTags title="Signup" />
+    <div className="mx-auto max-w-sm">
+      <MetaTags title="Sign Up" />
 
-      <main className="rw-main">
-        <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
-        <div className="rw-scaffold rw-login-container">
-          <div className="rw-segment">
-            <header className="rw-segment-header">
-              <h2 className="rw-heading rw-heading-secondary">Signup</h2>
-            </header>
+      <header className="mb-4 text-center">
+        <h1>Sign Up</h1>
+      </header>
 
-            <div className="rw-segment-main">
-              <div className="rw-form-wrapper">
-                <Form onSubmit={onSubmit} className="rw-form-wrapper">
-                  <Label
-                    name="email"
-                    className="rw-label"
-                    errorClassName="rw-label rw-label-error"
-                  >
-                    Email
-                  </Label>
+      <div className="block rounded-md bg-stone-700 p-4">
+        <Form onSubmit={onSubmit}>
+          <Label
+            name="email"
+            className="font-mono text-xs font-semibold uppercase text-stone-300"
+            errorClassName="text-xs font-mono font-semibold uppercase text-red-300"
+          >
+            Email
+          </Label>
 
-                  <RouteFocus>
-                    <TextField
-                      name="email"
-                      className="rw-input"
-                      errorClassName="rw-input rw-input-error"
-                      validation={{
-                        required: {
-                          value: true,
-                          message: 'Email is required',
-                        },
-                      }}
-                    />
-                  </RouteFocus>
+          <RouteFocus>
+            <TextField
+              name="email"
+              className="w-full rounded-md bg-stone-900 px-2 py-1 text-lg"
+              validation={{
+                required: {
+                  value: true,
+                  message: 'Email is required',
+                },
+              }}
+            />
+          </RouteFocus>
 
-                  <FieldError name="email" className="rw-field-error" />
+          <FieldError name="email" className="text-red-300" />
 
-                  <div className="rw-button-group">
-                    <Submit className="rw-button rw-button-blue">
-                      Sign Up
-                    </Submit>
-                  </div>
-                </Form>
-              </div>
-            </div>
+          <div className="mt-4 flex items-center justify-center">
+            <Submit className="rounded-md bg-emerald-500 px-3 py-2 text-sm font-semibold text-stone-900 transition-colors hover:bg-emerald-600">
+              Sign Up
+            </Submit>
           </div>
-          <div className="rw-login-link">
-            <span>Already have an account?</span>{' '}
-            <Link to={routes.login()} className="rw-link">
-              Log in!
-            </Link>
-          </div>
-        </div>
-      </main>
-    </>
+        </Form>
+      </div>
+
+      <p className="mt-2 text-center text-sm">
+        <span>Already have an account?</span>{' '}
+        <Link
+          to={routes.login()}
+          className="font-semibold text-emerald-500 hover:text-emerald-400"
+        >
+          Log in!
+        </Link>
+      </p>
+    </div>
   )
 }
 
