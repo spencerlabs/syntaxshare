@@ -1,28 +1,28 @@
 import { TbCodeCircle } from 'react-icons/tb'
-import type {
-  FindWorkspaceQuery,
-  FindWorkspaceQueryVariables,
-} from 'types/graphql'
+import type { FindPanelQuery, FindPanelQueryVariables } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
-import Workspace from 'src/components/Workspace/Workspace'
+import Panel from 'src/components/Panel/Panel'
 
 export const QUERY = gql`
-  query FindWorkspaceQuery($id: String!) {
-    workspace: workspace(id: $id) {
+  query FindPanelQuery($id: String!) {
+    panel: panel(id: $id) {
       id
       title
+      code
+      workspaceId
+      workspace {
+        panels {
+          id
+        }
+      }
       settings {
         id
-        size
-      }
-      panels {
-        id
-        title
-        settings {
-          language
-        }
+        language
+        codeSize
+        gradientFrom
+        gradientTo
       }
     }
   }
@@ -35,7 +35,7 @@ export const Loading = () => (
       aria-hidden
     />
     <div className="text-center font-mono text-lg font-semibold">
-      Loading workspace...
+      Loading panel...
     </div>
   </div>
 )
@@ -44,12 +44,12 @@ export const Empty = () => <div>Empty</div>
 
 export const Failure = ({
   error,
-}: CellFailureProps<FindWorkspaceQueryVariables>) => (
+}: CellFailureProps<FindPanelQueryVariables>) => (
   <div style={{ color: 'red' }}>Error: {error?.message}</div>
 )
 
 export const Success = ({
-  workspace,
-}: CellSuccessProps<FindWorkspaceQuery, FindWorkspaceQueryVariables>) => {
-  return <Workspace workspace={workspace} />
+  panel,
+}: CellSuccessProps<FindPanelQuery, FindPanelQueryVariables>) => {
+  return <Panel panel={panel} />
 }

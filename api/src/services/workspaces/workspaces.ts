@@ -12,6 +12,9 @@ export const workspaces: QueryResolvers['workspaces'] = () => {
     where: {
       userId: context.currentUser.id,
     },
+    orderBy: {
+      updatedAt: 'desc',
+    },
   })
 }
 
@@ -91,7 +94,11 @@ export const Workspace: WorkspaceRelationResolvers = {
     return db.workspace.findUnique({ where: { id: root?.id } }).user()
   },
   panels: (_obj, { root }) => {
-    return db.workspace.findUnique({ where: { id: root?.id } }).panels()
+    return db.workspace.findUnique({ where: { id: root?.id } }).panels({
+      orderBy: {
+        createdAt: 'asc',
+      },
+    })
   },
   settings: (_obj, { root }) => {
     return db.workspace.findUnique({ where: { id: root?.id } }).settings()

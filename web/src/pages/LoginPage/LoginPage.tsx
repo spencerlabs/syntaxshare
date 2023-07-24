@@ -79,7 +79,7 @@ const LoginPage = () => {
             />
           </RouteFocus>
 
-          <FieldError name="email" />
+          <FieldError name="email" className="text-red-300" />
 
           <div className="mt-4 flex items-center justify-center">
             <Submit

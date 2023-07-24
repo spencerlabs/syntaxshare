@@ -1,5 +1,9 @@
 @import 'tailwindcss/base';
 
+*, ::before, ::after {
+  --tw-ring-color: #10b981;
+}
+
 html, body {
   @apply h-full w-full bg-stone-900 text-stone-200;
 }
@@ -12,12 +16,24 @@ a {
   @apply hover:text-emerald-500 transition-colors duration-300;
 }
 
+a, button {
+  @apply focus:outline-none focus-visible:ring;
+}
+
 h1, h2, h3, h4, h5, h6 {
   @apply font-bold font-mono;
 }
 
-h1 {
+h1, .h1 {
   @apply text-3xl;
+}
+
+h2, .h2 {
+  @apply text-2xl;
+}
+
+h3, .h3 {
+  @apply text-xl;
 }
 
 @import 'tailwindcss/components';
@@ -28,9 +44,13 @@ h1 {
 }
 
 [data-reach-skip-link]:focus {
-  @apply bg-stone-900 font-semibold;
+  @apply bg-stone-900 text-stone-200 font-semibold;
 }
 
 .font-mono {
   word-spacing: -0.1rem;
+}
+
+#output-view .cm-editor {
+  @apply p-2
 }

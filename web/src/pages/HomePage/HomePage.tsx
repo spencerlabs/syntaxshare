@@ -6,7 +6,7 @@ import { useAuth } from 'src/auth'
 import WorkspacesCell from 'src/components/Workspace/WorkspacesCell'
 
 const CREATE_WORKSPACE_MUTATION = gql`
-  mutation CreateUserMutation($input: CreateWorkspaceInput!) {
+  mutation CreateWorkspaceMutation($input: CreateWorkspaceInput!) {
     createWorkspace(input: $input) {
       id
     }

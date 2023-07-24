@@ -23,7 +23,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
     <>
       <SkipNavLink contentId="main" />
 
-      <Toaster toastOptions={{ className: 'rw-toast', duration: 6000 }} />
+      <Toaster toastOptions={{ className: 'rw-toast', duration: 4000 }} />
 
       <header className="flex items-center justify-between space-x-4 px-wrap py-2">
         <Link to={routes.home()} className="font-mono text-lg font-semibold">
