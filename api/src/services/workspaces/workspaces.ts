@@ -5,7 +5,7 @@ import type {
 } from 'types/graphql'
 
 import { db } from 'src/lib/db'
-import { workspaceSettings } from 'src/lib/defaultSettings'
+import { workspaceSettings, panelSettings } from 'src/lib/defaultSettings'
 
 export const workspaces: QueryResolvers['workspaces'] = () => {
   return db.workspace.findMany({
@@ -35,12 +35,34 @@ export const createWorkspace: MutationResolvers['createWorkspace'] = async ({
     },
   })
 
+  const customAlphabet = await import('nanoid').then(
+    ({ customAlphabet }) => customAlphabet
+  )
+  const alphabet =
+    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+  const nanoId = customAlphabet(alphabet, 10)
+
+  const id = nanoId()
+
   return db.workspace.create({
     data: {
       ...input,
+      id,
       userId: context.currentUser.id,
       settings: {
         create: userSettings || workspaceSettings,
+      },
+      panels: {
+        create: {
+          code: '',
+          settings: {
+            create: {
+              ...panelSettings,
+              gradientFrom:
+                userSettings.gradientFrom || panelSettings.gradientFrom,
+            },
+          },
+        },
       },
     },
   })

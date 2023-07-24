@@ -7737,7 +7737,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/crypto-js@npm:^4.1.1":
+"@types/crypto-js@npm:4.1.1":
   version: 4.1.1
   resolution: "@types/crypto-js@npm:4.1.1"
   checksum: e53b712c5d3b72d19c67a06c8bbaaafd989d78f71a2168f1376c8fb84d5744e5166b58d79528a124645e13f13fe4d2c97ee8f03d649ef913e93ca6b8cee41370
@@ -8065,7 +8065,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/nodemailer@npm:^6.4.8":
+"@types/nodemailer@npm:6.4.8":
   version: 6.4.8
   resolution: "@types/nodemailer@npm:6.4.8"
   dependencies:
@@ -9447,9 +9447,10 @@ __metadata:
     "@redwoodjs/api": 5.4.3
     "@redwoodjs/auth-dbauth-api": 5.4.3
     "@redwoodjs/graphql-server": 5.4.3
-    "@types/crypto-js": ^4.1.1
-    "@types/nodemailer": ^6.4.8
-    nodemailer: ^6.9.4
+    "@types/crypto-js": 4.1.1
+    "@types/nodemailer": 6.4.8
+    nanoid: 4.0.2
+    nodemailer: 6.9.4
   languageName: unknown
   linkType: soft
 
@@ -19485,6 +19486,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:4.0.2":
+  version: 4.0.2
+  resolution: "nanoid@npm:4.0.2"
+  bin:
+    nanoid: bin/nanoid.js
+  checksum: 3fec62f422bc4727918eda0e7aa43e9cbb2e759be72813a0587b9dac99727d3c7ad972efce7f4f1d4cb5c7c554136a1ec3b1043d1d91d28d818d6acbe98200e5
+  languageName: node
+  linkType: hard
+
 "nanoid@npm:^3.3.1, nanoid@npm:^3.3.6":
   version: 3.3.6
   resolution: "nanoid@npm:3.3.6"
@@ -19704,7 +19714,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nodemailer@npm:^6.9.4":
+"nodemailer@npm:6.9.4":
   version: 6.9.4
   resolution: "nodemailer@npm:6.9.4"
   checksum: c50778ae499da089b5cceb4bbe6366900b14a76155c5e379e80996b46a2ba7db094b624e04b839f8c992e86bdad218f26b914467b3047fa8223142a42a4252f5

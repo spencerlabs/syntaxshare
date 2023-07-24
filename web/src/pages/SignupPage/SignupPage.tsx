@@ -26,9 +26,7 @@ const SignupPage = () => {
   }
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate(routes.home())
-    }
+    if (isAuthenticated) navigate(routes.home())
   }, [isAuthenticated])
 
   const onSubmit = async (data: { email: string }) => {

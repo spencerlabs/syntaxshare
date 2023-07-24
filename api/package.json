@@ -6,10 +6,11 @@
     "@redwoodjs/api": "5.4.3",
     "@redwoodjs/auth-dbauth-api": "5.4.3",
     "@redwoodjs/graphql-server": "5.4.3",
-    "nodemailer": "^6.9.4"
+    "nanoid": "4.0.2",
+    "nodemailer": "6.9.4"
   },
   "devDependencies": {
-    "@types/crypto-js": "^4.1.1",
-    "@types/nodemailer": "^6.4.8"
+    "@types/crypto-js": "4.1.1",
+    "@types/nodemailer": "6.4.8"
   }
 }

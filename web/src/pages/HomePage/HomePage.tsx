@@ -1,7 +1,17 @@
-import { Link, routes } from '@redwoodjs/router'
+import { useEffect } from 'react'
+
+import { Link, navigate, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
+import { useAuth } from 'src/auth'
+
 const HomePage = () => {
+  const { isAuthenticated } = useAuth()
+
+  useEffect(() => {
+    if (isAuthenticated) navigate(routes.workspaces())
+  }, [isAuthenticated])
+
   return (
     <>
       <MetaTags title="Home" description="Home page" />

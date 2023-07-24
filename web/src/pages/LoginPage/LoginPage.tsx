@@ -33,9 +33,7 @@ const LoginPage = () => {
   }, [search])
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate(routes.home())
-    }
+    if (isAuthenticated) navigate(routes.home())
   }, [isAuthenticated])
 
   return (
