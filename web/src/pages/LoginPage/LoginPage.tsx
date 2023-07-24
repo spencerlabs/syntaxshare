@@ -58,6 +58,17 @@ const LoginPage = () => {
             code={code}
           />
         )}
+
+        <a
+          href={`https://github.com/login/oauth/authorize?client_id=${
+            process.env.GITHUB_OAUTH_CLIENT_ID
+          }&redirect_uri=${
+            process.env.GITHUB_OAUTH_REDIRECT_URI
+          }&scope=${process.env.GITHUB_OAUTH_SCOPES.split(' ').join('+')}`}
+          className="mx-auto block w-48 rounded bg-gray-800 px-4 py-2 text-center text-xs font-semibold uppercase tracking-wide text-white"
+        >
+          Log in with GitHub
+        </a>
       </div>
 
       <p className="mt-2 text-center text-sm">
