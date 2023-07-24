@@ -1,4 +1,10 @@
-import { Link, SkipNavLink, SkipNavContent, routes } from '@redwoodjs/router'
+import {
+  Link,
+  SkipNavLink,
+  SkipNavContent,
+  routes,
+  useLocation,
+} from '@redwoodjs/router'
 import { Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
@@ -11,6 +17,7 @@ type AppLayoutProps = {
 
 const AppLayout = ({ children }: AppLayoutProps) => {
   const { isAuthenticated, logOut } = useAuth()
+  const { pathname } = useLocation()
 
   return (
     <>
@@ -29,13 +36,14 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         <nav className="space-x-3 font-mono text-sm font-semibold">
           {!isAuthenticated ? (
             <>
-              <Link to={routes.login()}>Log In</Link>
-              <Link
-                to={routes.signup()}
-                className="rounded-md bg-emerald-500 px-3 py-2 text-stone-900 hover:bg-emerald-600 hover:text-stone-900"
-              >
-                Sign Up
-              </Link>
+              {pathname !== '/login' && (
+                <Link
+                  to={routes.login()}
+                  className="rounded-md bg-emerald-500 px-3 py-2 text-stone-900 hover:bg-emerald-600 hover:text-stone-900"
+                >
+                  Log In or Sign Up
+                </Link>
+              )}
             </>
           ) : (
             <>

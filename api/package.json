@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@redwoodjs/api": "5.4.3",
-    "@redwoodjs/auth-dbauth-api": "5.4.3",
+    "@redwoodjs/auth-supabase-api": "5.4.3",
     "@redwoodjs/graphql-server": "5.4.3",
     "nanoid": "4.0.2",
     "nodemailer": "6.9.4"

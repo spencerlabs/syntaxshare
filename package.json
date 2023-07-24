@@ -24,6 +24,7 @@
     "cleanup": "rm -rf api/node_modules && rm -rf web/node_modules && rm -rf node_modules"
   },
   "devDependencies": {
+    "@redwoodjs/auth-supabase-setup": "5.4.3",
     "@redwoodjs/core": "5.4.3",
     "prettier-plugin-tailwindcss": "^0.4.1"
   },
