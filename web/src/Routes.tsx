@@ -7,10 +7,10 @@ const Routes = () => {
   return (
     <Router useAuth={useAuth}>
       <Set wrap={AppLayout}>
+        <Route path="/login" page={LoginPage} name="login" />
         <Set private unauthenticated="login">
           <Route path="/{id}" page={WorkspacePage} name="workspace" />
         </Set>
-        <Route path="/login" page={LoginPage} name="login" prerender />
         <Route path="/" page={HomePage} name="home" />
         <Route notfound page={NotFoundPage} />
       </Set>

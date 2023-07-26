@@ -1,14 +1,14 @@
 import { render } from '@redwoodjs/testing/web'
 
-import OutputView from './OutputView'
+import DeleteWorkspaceButton from './DeleteWorkspaceButton'
 
 //   Improve this test with help from the Redwood Testing Doc:
 //    https://redwoodjs.com/docs/testing#testing-components
 
-describe('OutputView', () => {
+describe('DeleteWorkspaceButton', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<OutputView />)
+      render(<DeleteWorkspaceButton />)
     }).not.toThrow()
   })
 })

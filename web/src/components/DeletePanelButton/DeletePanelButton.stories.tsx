@@ -4,8 +4,8 @@
 // ```tsx
 // import type { ComponentStory } from '@storybook/react'
 //
-// export const generated: ComponentStory<typeof LanguagePicker> = (args) => {
-//   return <LanguagePicker {...args} />
+// export const generated: ComponentStory<typeof DeletePanelButton> = (args) => {
+//   return <DeletePanelButton {...args} />
 // }
 // ```
 //
@@ -13,13 +13,13 @@
 
 import type { ComponentMeta } from '@storybook/react'
 
-import LanguagePicker from './LanguagePicker'
+import DeletePanelButton from './DeletePanelButton'
 
 export const generated = () => {
-  return <LanguagePicker />
+  return <DeletePanelButton />
 }
 
 export default {
-  title: 'Components/LanguagePicker',
-  component: LanguagePicker,
-} as ComponentMeta<typeof LanguagePicker>
+  title: 'Components/DeletePanelButton',
+  component: DeletePanelButton,
+} as ComponentMeta<typeof DeletePanelButton>

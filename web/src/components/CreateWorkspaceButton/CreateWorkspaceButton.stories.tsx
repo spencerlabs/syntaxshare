@@ -4,8 +4,8 @@
 // ```tsx
 // import type { ComponentStory } from '@storybook/react'
 //
-// export const generated: ComponentStory<typeof OutputView> = (args) => {
-//   return <OutputView {...args} />
+// export const generated: ComponentStory<typeof CreateWorkspaceButton> = (args) => {
+//   return <CreateWorkspaceButton {...args} />
 // }
 // ```
 //
@@ -13,13 +13,13 @@
 
 import type { ComponentMeta } from '@storybook/react'
 
-import OutputView from './OutputView'
+import CreateWorkspaceButton from './CreateWorkspaceButton'
 
 export const generated = () => {
-  return <OutputView />
+  return <CreateWorkspaceButton />
 }
 
 export default {
-  title: 'Components/OutputView',
-  component: OutputView,
-} as ComponentMeta<typeof OutputView>
+  title: 'Components/CreateWorkspaceButton',
+  component: CreateWorkspaceButton,
+} as ComponentMeta<typeof CreateWorkspaceButton>
