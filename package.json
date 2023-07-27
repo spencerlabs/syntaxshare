@@ -9,7 +9,7 @@
   "scripts": {
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
-    "dev": "yarn docker:down && yarn docker:up db && rw dev",
+    "dev": "yarn docker:down && yarn docker:up db direct && rw dev",
     "test": "yarn docker:down && yarn docker:up db-test && rw test",
     "build": "rw build",
     "lint": "rw lint",
