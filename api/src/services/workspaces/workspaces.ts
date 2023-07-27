@@ -1,3 +1,4 @@
+import { customAlphabet } from 'nanoid'
 import type {
   QueryResolvers,
   MutationResolvers,
@@ -9,6 +10,7 @@ import { workspaceSettings, panelSettings } from 'src/lib/defaultSettings'
 
 const alphabet =
   '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+const nanoId = customAlphabet(alphabet, 10)
 
 export const workspaces: QueryResolvers['workspaces'] = () => {
   return db.workspace.findMany({
@@ -42,11 +44,6 @@ export const createWorkspace: MutationResolvers['createWorkspace'] = async ({
     },
   })
 
-  const customAlphabet = await import('nanoid').then(
-    ({ customAlphabet }) => customAlphabet
-  )
-  const nanoId = customAlphabet(alphabet, 10)
-
   const id = nanoId()
 
   return db.workspace.create({
@@ -75,11 +72,6 @@ export const createWorkspace: MutationResolvers['createWorkspace'] = async ({
 
 export const createLocalWorkspace: MutationResolvers['createLocalWorkspace'] =
   async ({ workspaceSetting, panel, panelSetting }) => {
-    const customAlphabet = await import('nanoid').then(
-      ({ customAlphabet }) => customAlphabet
-    )
-    const nanoId = customAlphabet(alphabet, 10)
-
     const id = nanoId()
 
     return db.workspace.create({

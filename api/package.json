@@ -6,7 +6,7 @@
     "@redwoodjs/api": "5.4.3",
     "@redwoodjs/auth-supabase-api": "5.4.3",
     "@redwoodjs/graphql-server": "5.4.3",
-    "nanoid": "4.0.2",
+    "nanoid": "3.3.6",
     "nodemailer": "6.9.4"
   },
   "devDependencies": {
