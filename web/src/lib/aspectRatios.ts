@@ -1,4 +1,13 @@
-export const aspectRatios = {
+export const aspectRatios: {
+  [x: string]: {
+    canvasHeight: number
+    canvasWidth: number
+    height: number
+    label: string
+    padding: string
+    width: number
+  }
+} = {
   square: {
     canvasHeight: 1080,
     canvasWidth: 1080,
@@ -55,6 +64,6 @@ export const aspectRatios = {
     padding: 'pt-[100%]',
     width: 480,
   },
-} as const
+}
 
 export type AspectRatio = keyof typeof aspectRatios

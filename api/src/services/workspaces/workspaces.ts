@@ -7,6 +7,9 @@ import type {
 import { db } from 'src/lib/db'
 import { workspaceSettings, panelSettings } from 'src/lib/defaultSettings'
 
+const alphabet =
+  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
+
 export const workspaces: QueryResolvers['workspaces'] = () => {
   return db.workspace.findMany({
     where: {
@@ -35,14 +38,13 @@ export const createWorkspace: MutationResolvers['createWorkspace'] = async ({
       size: true,
       handle: true,
       gradientFrom: true,
+      gradientTo: true,
     },
   })
 
   const customAlphabet = await import('nanoid').then(
     ({ customAlphabet }) => customAlphabet
   )
-  const alphabet =
-    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
   const nanoId = customAlphabet(alphabet, 10)
 
   const id = nanoId()
@@ -70,6 +72,37 @@ export const createWorkspace: MutationResolvers['createWorkspace'] = async ({
     },
   })
 }
+
+export const createLocalWorkspace: MutationResolvers['createLocalWorkspace'] =
+  async ({ workspaceSetting, panel, panelSetting }) => {
+    const customAlphabet = await import('nanoid').then(
+      ({ customAlphabet }) => customAlphabet
+    )
+    const nanoId = customAlphabet(alphabet, 10)
+
+    const id = nanoId()
+
+    return db.workspace.create({
+      data: {
+        id,
+        title: 'Untitled',
+        userId: context.currentUser.id,
+        settings: {
+          create: { ...workspaceSettings, ...workspaceSetting },
+        },
+        panels: {
+          create: {
+            title: '',
+            code: '',
+            ...panel,
+            settings: {
+              create: { ...panelSettings, ...panelSetting },
+            },
+          },
+        },
+      },
+    })
+  }
 
 export const updateWorkspace: MutationResolvers['updateWorkspace'] = ({
   id,

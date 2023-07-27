@@ -46,7 +46,7 @@ const CreatePanelButton = ({
   const onClick = () => {
     if (isAuthenticated) {
       createPanel({
-        variables: { input: { workspaceId: workspaceId } },
+        variables: { input: { workspaceId: workspaceId, code: '' } },
       })
       return
     }

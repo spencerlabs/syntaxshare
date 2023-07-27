@@ -18,6 +18,13 @@ export const schema = gql`
     userWorkspaceSetting: WorkspaceSetting @requireAuth
   }
 
+  input CreateWorkspaceSettingInput {
+    size: String
+    handle: String
+    gradientFrom: String
+    gradientTo: String
+  }
+
   input UpdateWorkspaceSettingInput {
     size: String
     handle: String

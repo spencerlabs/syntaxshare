@@ -17,23 +17,21 @@ import { lintKeymap } from '@codemirror/lint'
 import { searchKeymap } from '@codemirror/search'
 import { EditorState, Transaction, Text } from '@codemirror/state'
 import { oneDark } from '@codemirror/theme-one-dark'
-import { keymap, dropCursor } from '@codemirror/view'
+import { keymap, dropCursor, placeholder } from '@codemirror/view'
 import { EditorView } from 'codemirror'
 
 import { Language } from 'src/lib/languages'
 
 interface UseCodeMirrorProps {
-  defaultValue?: Text
+  defaultValue?: Text | string
   editorRef: React.RefObject<HTMLElement>
   language: Language
-  onUpdate?: (doc: Text | string) => void
 }
 
 const useCodeMirror = ({
   defaultValue,
   editorRef,
   language,
-  onUpdate,
 }: UseCodeMirrorProps) => {
   const [doc, setDoc] = useState<Text | string>(defaultValue || '')
 
@@ -54,6 +52,7 @@ const useCodeMirror = ({
         bracketMatching(),
         closeBrackets(),
         EditorView.lineWrapping,
+        placeholder('// add your code here'),
         keymap.of([
           ...closeBracketsKeymap,
           ...defaultKeymap,
@@ -68,7 +67,6 @@ const useCodeMirror = ({
     function syncDispatch(tr: Transaction, view: EditorView) {
       view.update([tr])
       setDoc(editor.state.doc)
-      onUpdate && onUpdate(doc)
     }
 
     const editor: EditorView = new EditorView({

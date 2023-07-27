@@ -34,9 +34,7 @@ export const Loading = () => (
       className="h-10 w-10 animate-bounce text-emerald-500"
       aria-hidden
     />
-    <div className="text-center font-mono text-lg font-semibold">
-      Loading panel...
-    </div>
+    <div className="text-center text-lg font-semibold">Loading panel...</div>
   </div>
 )
 

@@ -18,6 +18,12 @@ export const schema = gql`
   input CreatePanelInput {
     title: String
     workspaceId: String!
+    code: String!
+  }
+
+  input CreateLocalPanelInput {
+    title: String
+    code: String
   }
 
   input UpdatePanelInput {

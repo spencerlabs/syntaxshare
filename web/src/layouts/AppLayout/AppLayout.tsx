@@ -26,11 +26,11 @@ const AppLayout = ({ children }: AppLayoutProps) => {
       <Toaster toastOptions={{ className: 'rw-toast', duration: 4000 }} />
 
       <header className="flex items-center justify-between space-x-4 px-wrap py-2">
-        <Link to={routes.home()} className="font-mono text-lg font-semibold">
-          Syntax Snap
+        <Link to={routes.home()} className="text-lg font-semibold">
+          Syntax Share
         </Link>
 
-        <nav className="space-x-3 font-mono text-sm font-semibold">
+        <nav className="space-x-3 text-sm font-semibold">
           {!isAuthenticated ? (
             <>
               {pathname !== '/login' && (
@@ -52,7 +52,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
       <main className="flex-1 px-wrap py-12">{children}</main>
 
-      <footer className="px-wrap py-1 font-mono">
+      <footer className="px-wrap py-1">
         <p className="text-center text-2xs">
           Copyright &copy; {new Date().getFullYear()}{' '}
           <a

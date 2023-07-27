@@ -18,6 +18,13 @@ export const schema = gql`
     userPanelSetting: PanelSetting @requireAuth
   }
 
+  input CreatePanelSettingInput {
+    language: String
+    codeSize: String
+    gradientFrom: String
+    gradientTo: String
+  }
+
   input UpdatePanelSettingInput {
     language: String
     codeSize: String

@@ -1,11 +1,13 @@
 export const workspaceSettings = {
   size: 'square',
-  handle: '#syntaxsnap',
+  handle: '#syntaxshare',
   gradientFrom: '047857',
+  gradientTo: '6ee7b7',
 }
 
 export const panelSettings = {
   language: 'javascript',
-  codeSize: 'base',
+  codeSize: 'medium',
   gradientFrom: '047857',
+  gradientTo: '6ee7b7',
 }

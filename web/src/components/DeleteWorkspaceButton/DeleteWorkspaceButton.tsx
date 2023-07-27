@@ -5,7 +5,7 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
-import { QUERY } from 'src/components/Workspace/WorkspaceCell'
+import { QUERY } from 'src/components/Workspace/WorkspacesCell'
 
 const DELETE_WORKSPACE_MUTATION = gql`
   mutation DeleteWorkspaceMutation($id: String!) {
@@ -26,7 +26,7 @@ const DeleteWorkspaceButton = ({ workspaceId }: { workspaceId: string }) => {
     onError: (error) => {
       toast.error(error.message)
     },
-    refetchQueries: [{ query: QUERY, variables: { id: workspaceId } }],
+    refetchQueries: [{ query: QUERY }],
     awaitRefetchQueries: true,
   })
 
@@ -34,7 +34,7 @@ const DeleteWorkspaceButton = ({ workspaceId }: { workspaceId: string }) => {
 
   return (
     <button
-      className="flex items-center rounded-full p-2 font-mono text-sm font-semibold text-red-400 transition-colors hover:bg-stone-700 hover:text-red-400 focus-visible:text-red-400"
+      className="absolute -right-px -top-px z-20 flex items-center rounded-bl-md p-2 text-sm font-semibold text-red-400 transition-colors hover:bg-stone-700 hover:text-red-400 focus-visible:text-red-400"
       onClick={() => deleteWorkspace({ variables: { id: workspaceId } })}
     >
       <TbTrash aria-hidden className="h-5 w-5" />

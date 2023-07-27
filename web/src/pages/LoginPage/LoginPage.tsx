@@ -60,8 +60,8 @@ const LoginPage = () => {
         <Form onSubmit={onSubmit} className="-mt-2">
           <Label
             name="email"
-            className="font-mono text-xs font-semibold uppercase text-stone-300"
-            errorClassName="text-xs font-mono font-semibold uppercase text-red-300"
+            className="text-xs font-semibold uppercase text-stone-300"
+            errorClassName="text-xs font-semibold uppercase text-red-300"
           >
             Email
           </Label>

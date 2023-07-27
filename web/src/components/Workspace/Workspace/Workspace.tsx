@@ -1,6 +1,15 @@
-import { Fragment, useEffect, useId, useState } from 'react'
+import {
+  Fragment,
+  createContext,
+  useContext,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react'
 
 import { Tab } from '@headlessui/react'
+import isEqual from 'lodash.isequal'
 import { TbDownload } from 'react-icons/tb'
 import type {
   FindWorkspaceQuery,
@@ -8,16 +17,43 @@ import type {
 } from 'types/graphql'
 
 import { navigate, routes, useLocation } from '@redwoodjs/router'
+import { useMutation } from '@redwoodjs/web'
 import { MetaTags } from '@redwoodjs/web'
 import type { CellSuccessProps } from '@redwoodjs/web'
+import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
 import CreatePanelButton from 'src/components/CreatePanelButton'
 import DeletePanelButton from 'src/components/DeletePanelButton'
-import DeleteWorkspaceButton from 'src/components/DeleteWorkspaceButton'
 import Panel from 'src/components/Panel/Panel'
 import PanelCell from 'src/components/Panel/PanelCell'
 import { languages } from 'src/lib/languages'
+
+const UPDATE_WORKSPACE_SETTING_MUTATION = gql`
+  mutation UpdateWorkspaceSettingMutation(
+    $id: String!
+    $input: UpdateWorkspaceSettingInput!
+  ) {
+    updateWorkspaceSetting(id: $id, input: $input) {
+      id
+    }
+  }
+`
+
+type WorkspaceSettings = {
+  [x: string]: unknown
+  size: string
+}
+
+interface IWorkspaceContext {
+  workspaceSettings: WorkspaceSettings
+  setWorkspaceSettings: React.Dispatch<React.SetStateAction<WorkspaceSettings>>
+}
+
+const WorkspaceContext = createContext<IWorkspaceContext>({
+  workspaceSettings: { size: 'square' },
+  setWorkspaceSettings: () => {},
+})
 
 const Workspace = ({
   workspace,
@@ -30,6 +66,16 @@ const Workspace = ({
   const { isAuthenticated } = useAuth()
   const { search } = useLocation()
   const [defaultPanel, setDefaultPanel] = useState(0)
+  const [title, setTitle] = useState(workspace?.title || 'Workspace')
+
+  const defaults = workspace?.settings
+    ? { size: workspace.settings.size }
+    : { size: 'square' }
+
+  const [workspaceSettings, setWorkspaceSettings] =
+    useState<WorkspaceSettings>(defaults)
+
+  const titleInputRef = useRef<HTMLInputElement>(null)
 
   const workspaceId = useId()
   const panelId = useId()
@@ -38,7 +84,23 @@ const Workspace = ({
     { id: panelId, settings: { language: 'javascript' } },
   ]
   const panelsCount = panels.length
-  const title = workspace?.title || 'Workspace'
+
+  const [updateWorkspaceSetting] = useMutation(
+    UPDATE_WORKSPACE_SETTING_MUTATION,
+    {
+      onError: (error) => {
+        toast.error(error.message)
+      },
+    }
+  )
+
+  useEffect(() => {
+    const el = titleInputRef.current
+
+    if (!el) return
+
+    el.size = title.length || 1
+  }, [title])
 
   useEffect(() => {
     const params = new URLSearchParams(search)
@@ -52,14 +114,48 @@ const Workspace = ({
     }
   }, [search])
 
+  useEffect(() => {
+    if (isAuthenticated) return
+
+    const localWorkspace = localStorage.getItem('syntaxshare.workspaceSettings')
+
+    if (localWorkspace) setWorkspaceSettings(JSON.parse(localWorkspace))
+  }, [isAuthenticated])
+
+  useEffect(() => {
+    if (isEqual(defaults, workspaceSettings)) return
+
+    if (isAuthenticated) {
+      updateWorkspaceSetting({
+        variables: { id: workspace.settings.id, input: workspaceSettings },
+      })
+
+      return
+    }
+
+    localStorage.setItem(
+      'syntaxshare.workspaceSettings',
+      JSON.stringify(workspaceSettings)
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated, workspaceSettings])
+
   return (
-    <>
+    <WorkspaceContext.Provider
+      value={{ workspaceSettings, setWorkspaceSettings }}
+    >
       <MetaTags title={title} />
 
       <header className="mb-6 flex items-center justify-between space-x-4">
         <h1>
           {isAuthenticated ? (
-            <input className="bg-transparent" defaultValue={title} />
+            <input
+              ref={titleInputRef}
+              className="-ml-3 min-w-[calc(8ch_+_1.5rem)] rounded-md bg-transparent px-3 py-2 transition-colors focus:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+              defaultValue={title}
+              placeholder="Untitled"
+              onChange={(e) => setTitle(e.target.value)}
+            />
           ) : (
             title
           )}
@@ -67,13 +163,11 @@ const Workspace = ({
 
         <div className="flex items-center space-x-1">
           {isAuthenticated && (
-            <button className="flex items-center rounded-full p-2 font-mono text-sm font-semibold text-stone-400 transition-colors hover:bg-stone-700 hover:text-stone-200 focus-visible:text-stone-200">
+            <button className="flex items-center rounded-full p-2 text-sm font-semibold text-stone-400 transition-colors hover:bg-stone-700 hover:text-stone-200 focus-visible:text-stone-200">
               <TbDownload aria-hidden className="h-5 w-5" />
               <span className="sr-only">Download All</span>
             </button>
           )}
-
-          {isAuthenticated && <DeleteWorkspaceButton workspaceId={id} />}
         </div>
       </header>
 
@@ -82,9 +176,9 @@ const Workspace = ({
           <div className="relative z-10 flex items-center border-b-2 border-stone-700">
             <Tab.List className="-mb-[2px] flex items-center overflow-x-auto">
               {panels.map((panel, i) => {
-                const language = languages.find(
-                  (l) => l.id === panel.settings.language
-                )
+                const language =
+                  languages.find((l) => l.id === panel?.settings?.language) ||
+                  languages.find((l) => l.id === 'javascript')
 
                 return (
                   <div key={panel.id} className="relative flex items-center">
@@ -111,7 +205,7 @@ const Workspace = ({
                               : 'border-transparent text-stone-400'
                           } ${
                             panelsCount > 1 ? 'pr-10' : 'pr-3'
-                          } flex items-center rounded-t-md border-b-2 py-2 pl-3 font-mono text-sm font-semibold transition-colors hover:bg-stone-700 hover:text-stone-200 focus:outline-none focus-visible:ring focus-visible:ring-inset`}
+                          } flex items-center rounded-t-md border-b-2 py-2 pl-3 text-sm font-semibold transition-colors hover:bg-stone-700 hover:text-stone-200 focus:outline-none focus-visible:ring focus-visible:ring-inset`}
                         >
                           <language.icon aria-hidden className="mr-1 h-5 w-5" />
                           <span>{panel.title || language.name}</span>
@@ -153,8 +247,12 @@ const Workspace = ({
       ) : (
         <Panel />
       )}
-    </>
+    </WorkspaceContext.Provider>
   )
+}
+
+export const useWorkspace = () => {
+  return useContext(WorkspaceContext)
 }
 
 export default Workspace

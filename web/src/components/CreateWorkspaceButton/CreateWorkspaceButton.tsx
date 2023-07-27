@@ -24,9 +24,11 @@ const CreateWorkspaceButton = () => {
 
   return (
     <button
-      className="rounded-md bg-emerald-500 px-3 py-2 font-mono text-sm font-semibold text-stone-900 transition-colors hover:bg-emerald-600"
+      className="rounded-md bg-emerald-500 px-3 py-2 text-sm font-semibold text-stone-900 transition-colors hover:bg-emerald-600"
       onClick={() =>
-        createWorkspace({ variables: { input: { title: 'Untitled' } } })
+        createWorkspace({
+          variables: { input: { title: 'Untitled' } },
+        })
       }
     >
       New Workspace

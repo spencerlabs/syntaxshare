@@ -1,7 +1,6 @@
 import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 
 import { db } from './db'
-import { workspaceSettings, panelSettings } from './defaultSettings'
 
 /**
  * Represents the user attributes returned by the decoding the
@@ -54,12 +53,6 @@ export const getCurrentUser = async (
     user = await db.user.create({
       data: {
         email,
-        workspaceSettings: {
-          create: workspaceSettings,
-        },
-        panelSettings: {
-          create: panelSettings,
-        },
       },
       select: {
         id: true,

@@ -33,6 +33,11 @@ export const schema = gql`
 
   type Mutation {
     createWorkspace(input: CreateWorkspaceInput!): Workspace! @requireAuth
+    createLocalWorkspace(
+      workspaceSetting: CreateWorkspaceSettingInput!
+      panel: CreateLocalPanelInput!
+      panelSetting: CreatePanelSettingInput!
+    ): Workspace! @requireAuth
     updateWorkspace(id: String!, input: UpdateWorkspaceInput!): Workspace!
       @requireAuth
     deleteWorkspace(id: String!): Workspace! @requireAuth

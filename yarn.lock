@@ -8397,6 +8397,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash.isequal@npm:^4.5.6":
+  version: 4.5.6
+  resolution: "@types/lodash.isequal@npm:4.5.6"
+  dependencies:
+    "@types/lodash": "*"
+  checksum: d14cb561e3db36b80bde1d6eea5b012c46c8bb7a7dadb2844bd80b209d7c324eb54ad5ca7b6e57c253593662d8fc676da430f2216aaca1c04b087d38030151ae
+  languageName: node
+  linkType: hard
+
+"@types/lodash@npm:*":
+  version: 4.14.196
+  resolution: "@types/lodash@npm:4.14.196"
+  checksum: a482cc4070f45f278b3fcedfb66b109b2a32fcae5854c6d500333cef73f25fbd7f1d48cd4a709dae2ed31ff2cf0df70080d0f7185b0faebcb738eb1ef997ebd1
+  languageName: node
+  linkType: hard
+
 "@types/lodash@npm:^4.14.167":
   version: 4.14.195
   resolution: "@types/lodash@npm:4.14.195"
@@ -18985,6 +19001,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash.isequal@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.isequal@npm:4.5.0"
+  checksum: dfdb2356db19631a4b445d5f37868a095e2402292d59539a987f134a8778c62a2810c2452d11ae9e6dcac71fc9de40a6fedcb20e2952a15b431ad8b29e50e28f
+  languageName: node
+  linkType: hard
+
 "lodash.isplainobject@npm:^4.0.6":
   version: 4.0.6
   resolution: "lodash.isplainobject@npm:4.0.6"
@@ -26559,9 +26582,11 @@ __metadata:
     "@redwoodjs/router": 5.4.3
     "@redwoodjs/web": 5.4.3
     "@supabase/supabase-js": ^2
+    "@types/lodash.isequal": ^4.5.6
     autoprefixer: 10.4.14
     codemirror: 6.0.1
     html-to-image: 1.11.11
+    lodash.isequal: ^4.5.0
     postcss: 8.4.27
     postcss-loader: 7.3.3
     prop-types: 15.8.1

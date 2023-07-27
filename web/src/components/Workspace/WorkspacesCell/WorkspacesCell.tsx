@@ -4,7 +4,9 @@ import { Link, routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import { MetaTags } from '@redwoodjs/web'
 
-import CreateWorkspaceButton from 'src/components/CreateWorkspaceButton'
+import CreateLocalWorkspace from 'src/components/CreateLocalWorkspace'
+import DeleteWorkspaceButton from 'src/components/DeleteWorkspaceButton'
+import { aspectRatios } from 'src/lib/aspectRatios'
 import { languages } from 'src/lib/languages'
 
 export const QUERY = gql`
@@ -12,6 +14,9 @@ export const QUERY = gql`
     workspaces {
       id
       title
+      settings {
+        size
+      }
       panels {
         id
         settings {
@@ -25,7 +30,10 @@ export const QUERY = gql`
 export const Loading = () => <div>Loading...</div>
 
 export const Empty = () => (
-  <p className="text-center">No workspaces found. Create a new one!</p>
+  <>
+    <CreateLocalWorkspace />
+    <p className="text-center">No workspaces found. Create a new one!</p>
+  </>
 )
 
 export const Failure = ({ error }: CellFailureProps) => (
@@ -37,24 +45,27 @@ export const Success = ({ workspaces }: CellSuccessProps<WorkspacesQuery>) => {
     <>
       <MetaTags title="Workspaces" />
 
-      <header className="mb-6 flex items-center justify-between space-x-4">
-        <h1>Workspaces</h1>
-        <CreateWorkspaceButton />
-      </header>
+      <CreateLocalWorkspace />
 
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {workspaces.map((workspace) => (
           <article
             key={workspace.id}
-            className="relative rounded-md border border-stone-700 p-4 transition-colors hover:bg-stone-700"
+            className="relative overflow-hidden rounded-md border border-stone-700"
           >
-            <h2 className="h3">
-              <Link
-                to={routes.workspace({ id: workspace.id })}
-                className="after:absolute after:inset-0 after:content-['']"
-              >
-                {workspace.title}
-              </Link>
+            <div className="p-4 transition-colors hover:bg-stone-700">
+              <h2 className="h3">
+                <Link
+                  to={routes.workspace({ id: workspace.id })}
+                  className="after:absolute after:inset-0 after:content-['']"
+                >
+                  {workspace.title}
+                </Link>
+              </h2>
+
+              <p className="text-sm font-semibold text-stone-400">
+                {aspectRatios[workspace.settings.size].label}
+              </p>
 
               <ul className="mt-2 flex flex-wrap items-center">
                 {workspace.panels.map((panel, i) => {
@@ -75,7 +86,9 @@ export const Success = ({ workspaces }: CellSuccessProps<WorkspacesQuery>) => {
                   )
                 })}
               </ul>
-            </h2>
+            </div>
+
+            <DeleteWorkspaceButton workspaceId={workspace.id} />
           </article>
         ))}
       </div>

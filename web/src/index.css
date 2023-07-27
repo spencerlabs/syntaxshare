@@ -5,7 +5,8 @@
 }
 
 html, body {
-  @apply h-full w-full bg-stone-900 text-stone-200;
+  @apply h-full w-full bg-stone-900 text-stone-200 font-mono;
+  word-spacing: -0.1rem;
 }
 
 #redwood-app {
@@ -21,7 +22,7 @@ a, button {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  @apply font-bold font-mono;
+  @apply font-bold;
 }
 
 h1, .h1 {
@@ -45,10 +46,6 @@ h3, .h3 {
 
 [data-reach-skip-link]:focus {
   @apply bg-stone-900 text-stone-200 font-semibold;
-}
-
-.font-mono {
-  word-spacing: -0.1rem;
 }
 
 #output-view .cm-editor {
