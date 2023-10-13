@@ -24,7 +24,7 @@ const LoginPopup = ({ notification, isOpen, setIsOpen }: LoginPopupProps) => {
       email: data.email,
       authMethod: 'otp',
       options: {
-        emailRedirectTo: window.location.href,
+        emailRedirectTo: window.location.origin,
       },
     })
 
@@ -54,7 +54,7 @@ const LoginPopup = ({ notification, isOpen, setIsOpen }: LoginPopupProps) => {
               provider: 'github',
               authMethod: 'oauth',
               options: {
-                redirectTo: window.location.href,
+                redirectTo: window.location.origin,
               },
             })
           }
