@@ -28,10 +28,10 @@
     "@codemirror/state": "6.2.1",
     "@codemirror/theme-one-dark": "6.1.2",
     "@headlessui/react": "1.7.15",
-    "@redwoodjs/auth-supabase-web": "5.4.3",
-    "@redwoodjs/forms": "5.4.3",
-    "@redwoodjs/router": "5.4.3",
-    "@redwoodjs/web": "5.4.3",
+    "@redwoodjs/auth-supabase-web": "6.3.2",
+    "@redwoodjs/forms": "6.3.2",
+    "@redwoodjs/router": "6.3.2",
+    "@redwoodjs/web": "6.3.2",
     "@supabase/supabase-js": "^2",
     "codemirror": "6.0.1",
     "downloadjs": "^1.4.7",
@@ -45,6 +45,7 @@
     "react-icons": "4.10.1"
   },
   "devDependencies": {
+    "@redwoodjs/vite": "6.3.2",
     "@types/downloadjs": "^1.4.4",
     "@types/lodash.isequal": "^4.5.6",
     "autoprefixer": "10.4.14",

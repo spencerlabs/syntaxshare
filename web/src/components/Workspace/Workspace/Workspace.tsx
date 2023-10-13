@@ -19,6 +19,7 @@ import DeletePanelButton from 'src/components/DeletePanelButton'
 import LoginPopup from 'src/components/LoginPopup'
 import Panel from 'src/components/Panel/Panel'
 import PanelCell from 'src/components/Panel/PanelCell'
+import PanelProvider from 'src/components/PanelProvider'
 import { QUERY } from 'src/components/Workspace/WorkspaceCell'
 import { useWorkspace } from 'src/components/WorkspaceProvider'
 import { languages } from 'src/lib/languages'
@@ -269,7 +270,9 @@ const Workspace = ({
             ))
           ) : (
             <Tab.Panel className="relative z-0 pt-6 focus-visible:outline-none focus-visible:ring">
-              <Panel />
+              <PanelProvider>
+                <Panel />
+              </PanelProvider>
             </Tab.Panel>
           )}
         </Tab.Panels>

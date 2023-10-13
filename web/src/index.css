@@ -1,4 +1,6 @@
 @import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
 
 *, ::before, ::after {
   --tw-ring-color: #10b981;
@@ -36,9 +38,6 @@ h2, .h2 {
 h3, .h3 {
   @apply text-xl;
 }
-
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
 
 [class*="transition-"] {
   @apply duration-300;

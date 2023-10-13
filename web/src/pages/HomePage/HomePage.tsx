@@ -6,6 +6,7 @@ import { useAuth } from 'src/auth'
 import CreateWorkspaceButton from 'src/components/CreateWorkspaceButton'
 import Workspace from 'src/components/Workspace/Workspace'
 import WorkspacesCell from 'src/components/Workspace/WorkspacesCell'
+import WorkspaceProvider from 'src/components/WorkspaceProvider'
 
 const HomePage = () => {
   const { loading, isAuthenticated } = useAuth()
@@ -39,7 +40,9 @@ const HomePage = () => {
       <WorkspacesCell />
     </>
   ) : (
-    <Workspace />
+    <WorkspaceProvider>
+      <Workspace />
+    </WorkspaceProvider>
   )
 }
 
