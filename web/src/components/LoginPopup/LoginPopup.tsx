@@ -23,6 +23,9 @@ const LoginPopup = ({ notification, isOpen, setIsOpen }: LoginPopupProps) => {
     const { error } = await logIn({
       email: data.email,
       authMethod: 'otp',
+      options: {
+        emailRedirectTo: window.location.href,
+      },
     })
 
     if (error) {
@@ -50,6 +53,9 @@ const LoginPopup = ({ notification, isOpen, setIsOpen }: LoginPopupProps) => {
             logIn({
               provider: 'github',
               authMethod: 'oauth',
+              options: {
+                redirectTo: window.location.href,
+              },
             })
           }
         >
