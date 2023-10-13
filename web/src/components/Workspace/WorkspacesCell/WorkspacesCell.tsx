@@ -5,7 +5,7 @@ import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 import { MetaTags } from '@redwoodjs/web'
 
 import CreateLocalWorkspace from 'src/components/CreateLocalWorkspace'
-import DeleteWorkspaceButton from 'src/components/DeleteWorkspaceButton'
+import WorkspaceMenu from 'src/components/WorkspaceMenu'
 import { aspectRatios } from 'src/lib/aspectRatios'
 import { languages } from 'src/lib/languages'
 
@@ -14,6 +14,7 @@ export const QUERY = gql`
     workspaces {
       id
       title
+      visibility
       settings {
         size
       }
@@ -51,9 +52,9 @@ export const Success = ({ workspaces }: CellSuccessProps<WorkspacesQuery>) => {
         {workspaces.map((workspace) => (
           <article
             key={workspace.id}
-            className="relative overflow-hidden rounded-md border border-stone-700"
+            className="relative flex flex-col overflow-hidden rounded-md border border-stone-700"
           >
-            <div className="p-4 transition-colors hover:bg-stone-700">
+            <div className="flex-1 p-4 transition-colors hover:bg-stone-700">
               <h2 className="h3">
                 <Link
                   to={routes.workspace({ id: workspace.id })}
@@ -88,7 +89,10 @@ export const Success = ({ workspaces }: CellSuccessProps<WorkspacesQuery>) => {
               </ul>
             </div>
 
-            <DeleteWorkspaceButton workspaceId={workspace.id} />
+            <WorkspaceMenu
+              workspaceId={workspace.id}
+              visible={workspace.visibility === 'public'}
+            />
           </article>
         ))}
       </div>

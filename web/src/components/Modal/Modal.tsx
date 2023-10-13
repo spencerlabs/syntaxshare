@@ -41,7 +41,9 @@ const Modal = ({ isOpen, setIsOpen, children, title }: IModal) => {
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-md bg-stone-700 p-6 text-left align-middle transition-all">
-                <Dialog.Title as="h3">{title}</Dialog.Title>
+                <Dialog.Title as="h3" className="mb-4">
+                  {title}
+                </Dialog.Title>
 
                 {children && <div className="mt-2">{children}</div>}
               </Dialog.Panel>

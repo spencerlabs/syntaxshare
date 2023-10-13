@@ -1,30 +1,9 @@
-import { Fragment, useState } from 'react'
+import { Fragment } from 'react'
 
-import { RadioGroup, Switch, Tab } from '@headlessui/react'
+import { RadioGroup, Tab } from '@headlessui/react'
 
-import { usePanel } from 'src/components/Panel/Panel'
-
-export const colors = [
-  { from: '10b981', to: '10b981' },
-  { from: 'ef4444', to: 'ef4444' },
-  { from: '8b5cf6', to: '8b5cf6' },
-  { from: '64748b', to: '64748b' },
-  { from: 'eab308', to: 'eab308' },
-  { from: '3b82f6', to: '3b82f6' },
-  { from: 'ec4899', to: 'ec4899' },
-  { from: 'f97316', to: 'f97316' },
-]
-
-export const gradients = [
-  { from: '047857', to: '6ee7b7' },
-  { from: 'b91c1c', to: 'fca5a5' },
-  { from: '6d28d9', to: 'c4b5fd' },
-  { from: '334155', to: 'cbd5e1' },
-  { from: 'a16207', to: 'fcd34d' },
-  { from: '1d4ed8', to: '93c5fd' },
-  { from: 'be185d', to: 'f9a8d4' },
-  { from: 'c2410c', to: 'fdba74' },
-]
+import { usePanel } from 'src/components/PanelProvider'
+import { colors, gradients } from 'src/lib/colors'
 
 const BackgroundPicker = () => {
   const { panelSettings, setPanelSettings } = usePanel()
@@ -33,8 +12,6 @@ const BackgroundPicker = () => {
     (c) =>
       c.from === panelSettings.gradientFrom && c.to === panelSettings.gradientTo
   )
-
-  const [isSolid, setIsSolid] = useState(false)
 
   return (
     <RadioGroup
@@ -149,41 +126,57 @@ const BackgroundPicker = () => {
             </div>
           </Tab.Panel>
 
-          <Tab.Panel>
-            <Switch
-              checked={isSolid}
-              onChange={setIsSolid}
-              className={`${isSolid ? 'bg-emerald-900' : 'bg-emerald-500'}
-          relative inline-flex h-[38px] w-[74px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
-            >
-              <span className="sr-only">Use setting</span>
-              <span
-                aria-hidden="true"
-                className={`${isSolid ? 'translate-x-9' : 'translate-x-0'}
-            pointer-events-none inline-block h-[34px] w-[34px] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
-              />
-            </Switch>
+          <Tab.Panel className="flex space-x-4 text-sm">
+            <div>
+              <label
+                htmlFor="gradientFrom"
+                className="mb-1 block text-xs font-bold"
+              >
+                From color
+              </label>
+              <div className="flex items-stretch">
+                <span className="flex items-center rounded-l-md bg-stone-700 px-2">
+                  #
+                </span>
 
-            <input
-              defaultValue={panelSettings.gradientFrom}
-              onChange={(e) =>
-                setPanelSettings({
-                  ...panelSettings,
-                  gradientFrom: e.target.value,
-                })
-              }
-            />
-            {!isSolid && (
-              <input
-                defaultValue={panelSettings.gradientTo}
-                onChange={(e) =>
-                  setPanelSettings({
-                    ...panelSettings,
-                    gradientTo: e.target.value,
-                  })
-                }
-              />
-            )}
+                <input
+                  id="gradientFrom"
+                  defaultValue={panelSettings.gradientFrom}
+                  className="flex-1 rounded-r-md bg-stone-800 px-2 py-1 outline-none ring-inset ring-emerald-500 focus:bg-stone-700 focus-visible:ring-2"
+                  onChange={(e) =>
+                    setPanelSettings({
+                      ...panelSettings,
+                      gradientFrom: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="gradientTo"
+                className="mb-1 block text-xs font-bold"
+              >
+                To color
+              </label>
+              <div className="flex items-stretch">
+                <span className="flex items-center rounded-l-md bg-stone-700 px-2">
+                  #
+                </span>
+                <input
+                  id="gradientTo"
+                  defaultValue={panelSettings.gradientTo}
+                  className="flex-1 rounded-r-md bg-stone-800 px-2 py-1 outline-none ring-inset ring-emerald-500 focus:bg-stone-700 focus-visible:ring-2"
+                  onChange={(e) =>
+                    setPanelSettings({
+                      ...panelSettings,
+                      gradientTo: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </div>
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>

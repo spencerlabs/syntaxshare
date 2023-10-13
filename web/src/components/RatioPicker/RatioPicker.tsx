@@ -1,6 +1,6 @@
 import { RadioGroup } from '@headlessui/react'
 
-import { useWorkspace } from 'src/components/Workspace/Workspace'
+import { useWorkspace } from 'src/components/WorkspaceProvider'
 import { aspectRatios } from 'src/lib/aspectRatios'
 
 const RatioPicker = () => {

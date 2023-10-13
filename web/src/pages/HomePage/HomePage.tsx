@@ -8,7 +8,7 @@ import Workspace from 'src/components/Workspace/Workspace'
 import WorkspacesCell from 'src/components/Workspace/WorkspacesCell'
 
 const HomePage = () => {
-  const { isAuthenticated } = useAuth()
+  const { loading, isAuthenticated } = useAuth()
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -16,7 +16,7 @@ const HomePage = () => {
     setIsLoading(false)
   }, [])
 
-  if (isLoading) {
+  if (loading || isLoading) {
     return (
       <div className="flex min-h-[75vh] w-full flex-col items-center justify-center px-wrap py-12">
         <TbCodeCircle

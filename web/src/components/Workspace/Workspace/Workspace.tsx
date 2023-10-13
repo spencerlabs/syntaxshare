@@ -1,22 +1,13 @@
-import {
-  Fragment,
-  createContext,
-  useContext,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from 'react'
+import { Fragment, useEffect, useId, useRef, useState } from 'react'
 
 import { Tab } from '@headlessui/react'
-import isEqual from 'lodash.isequal'
-import { TbDownload } from 'react-icons/tb'
+import { TbDownload, TbFileZip } from 'react-icons/tb'
 import type {
   FindWorkspaceQuery,
   FindWorkspaceQueryVariables,
 } from 'types/graphql'
 
-import { navigate, routes, useLocation } from '@redwoodjs/router'
+import { Link, navigate, routes, useLocation } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
 import { MetaTags } from '@redwoodjs/web'
 import type { CellSuccessProps } from '@redwoodjs/web'
@@ -25,9 +16,23 @@ import { toast } from '@redwoodjs/web/toast'
 import { useAuth } from 'src/auth'
 import CreatePanelButton from 'src/components/CreatePanelButton'
 import DeletePanelButton from 'src/components/DeletePanelButton'
+import LoginPopup from 'src/components/LoginPopup'
 import Panel from 'src/components/Panel/Panel'
 import PanelCell from 'src/components/Panel/PanelCell'
+import { QUERY } from 'src/components/Workspace/WorkspaceCell'
+import { useWorkspace } from 'src/components/WorkspaceProvider'
 import { languages } from 'src/lib/languages'
+
+const UPDATE_WORKSPACE_MUTATION = gql`
+  mutation UpdateWorkspaceMutation(
+    $id: String!
+    $input: UpdateWorkspaceInput!
+  ) {
+    updateWorkspace(id: $id, input: $input) {
+      id
+    }
+  }
+`
 
 const UPDATE_WORKSPACE_SETTING_MUTATION = gql`
   mutation UpdateWorkspaceSettingMutation(
@@ -40,21 +45,6 @@ const UPDATE_WORKSPACE_SETTING_MUTATION = gql`
   }
 `
 
-type WorkspaceSettings = {
-  [x: string]: unknown
-  size: string
-}
-
-interface IWorkspaceContext {
-  workspaceSettings: WorkspaceSettings
-  setWorkspaceSettings: React.Dispatch<React.SetStateAction<WorkspaceSettings>>
-}
-
-const WorkspaceContext = createContext<IWorkspaceContext>({
-  workspaceSettings: { size: 'square' },
-  setWorkspaceSettings: () => {},
-})
-
 const Workspace = ({
   workspace,
 }: {
@@ -66,14 +56,11 @@ const Workspace = ({
   const { isAuthenticated } = useAuth()
   const { search } = useLocation()
   const [defaultPanel, setDefaultPanel] = useState(0)
-  const [title, setTitle] = useState(workspace?.title || 'Workspace')
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
 
-  const defaults = workspace?.settings
-    ? { size: workspace.settings.size }
-    : { size: 'square' }
+  const { workspaceSettings, setWorkspaceSettings } = useWorkspace()
 
-  const [workspaceSettings, setWorkspaceSettings] =
-    useState<WorkspaceSettings>(defaults)
+  const title = workspace?.title || 'Workspace'
 
   const titleInputRef = useRef<HTMLInputElement>(null)
 
@@ -93,6 +80,13 @@ const Workspace = ({
       },
     }
   )
+
+  const [updateWorkspace] = useMutation(UPDATE_WORKSPACE_MUTATION, {
+    onError: (error) => {
+      toast.error(error.message)
+    },
+    refetchQueries: [{ query: QUERY, variables: { id } }],
+  })
 
   useEffect(() => {
     const el = titleInputRef.current
@@ -120,11 +114,10 @@ const Workspace = ({
     const localWorkspace = localStorage.getItem('syntaxshare.workspaceSettings')
 
     if (localWorkspace) setWorkspaceSettings(JSON.parse(localWorkspace))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
 
   useEffect(() => {
-    if (isEqual(defaults, workspaceSettings)) return
-
     if (isAuthenticated) {
       updateWorkspaceSetting({
         variables: { id: workspace.settings.id, input: workspaceSettings },
@@ -141,10 +134,10 @@ const Workspace = ({
   }, [isAuthenticated, workspaceSettings])
 
   return (
-    <WorkspaceContext.Provider
-      value={{ workspaceSettings, setWorkspaceSettings }}
-    >
-      <MetaTags title={title} />
+    <>
+      <MetaTags
+        title={!isAuthenticated ? 'Share beautiful code snippets' : title}
+      />
 
       <header className="mb-6 flex items-center justify-between space-x-4">
         <h1>
@@ -154,28 +147,52 @@ const Workspace = ({
               className="-ml-3 min-w-[calc(8ch_+_1.5rem)] rounded-md bg-transparent px-3 py-2 transition-colors focus:bg-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
               defaultValue={title}
               placeholder="Untitled"
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => {
+                e.target.size = e.target.value.length
+              }}
+              onBlur={(e) =>
+                updateWorkspace({
+                  variables: { id, input: { title: e.target.value } },
+                })
+              }
             />
           ) : (
-            title
+            <button onClick={() => setIsLoginOpen(true)}>{title}</button>
           )}
         </h1>
 
         <div className="flex items-center space-x-1">
-          {isAuthenticated && (
-            <button className="flex items-center rounded-full p-2 text-sm font-semibold text-stone-400 transition-colors hover:bg-stone-700 hover:text-stone-200 focus-visible:text-stone-200">
-              <TbDownload aria-hidden className="h-5 w-5" />
+          <button
+            className="flex items-center rounded-full p-2 text-sm font-semibold text-stone-400 transition-colors hover:bg-stone-700 hover:text-stone-200 focus-visible:text-stone-200"
+            onClick={() => {
+              const keyboardEvent = new KeyboardEvent('keydown', {
+                metaKey: true,
+                key: 's',
+              })
+              window.dispatchEvent(keyboardEvent)
+            }}
+          >
+            <TbDownload aria-hidden className="h-5 w-5" />
+            <span className="sr-only">Download</span>
+          </button>
+
+          {isAuthenticated && panelsCount > 1 && (
+            <Link
+              to={routes.download({ id: workspace.id })}
+              className="flex items-center rounded-full p-2 text-sm font-semibold text-stone-400 transition-colors hover:bg-stone-700 hover:text-stone-200 focus-visible:text-stone-200"
+            >
+              <TbFileZip aria-hidden className="h-5 w-5" />
               <span className="sr-only">Download All</span>
-            </button>
+            </Link>
           )}
         </div>
       </header>
 
-      {isAuthenticated ? (
-        <Tab.Group manual selectedIndex={defaultPanel}>
-          <div className="relative z-10 flex items-center border-b-2 border-stone-700">
-            <Tab.List className="-mb-[2px] flex items-center overflow-x-auto">
-              {panels.map((panel, i) => {
+      <Tab.Group manual selectedIndex={defaultPanel}>
+        <div className="relative z-10 flex items-center border-b-2 border-stone-700">
+          <Tab.List className="-mb-[2px] flex items-center overflow-x-auto">
+            {isAuthenticated ? (
+              panels.map((panel, i) => {
                 const language =
                   languages.find((l) => l.id === panel?.settings?.language) ||
                   languages.find((l) => l.id === 'javascript')
@@ -222,37 +239,49 @@ const Workspace = ({
                     )}
                   </div>
                 )
-              })}
-            </Tab.List>
-
-            {panels.length < 10 && (
-              <CreatePanelButton
-                workspaceId={workspace.id}
-                panelsCount={workspace.panels.length}
-              />
+              })
+            ) : (
+              <Tab as={Fragment}>
+                <button className="flex items-center rounded-t-md border-b-2 border-emerald-500 py-2 pl-3 pr-3 text-sm font-semibold text-stone-200 transition-colors hover:bg-stone-700 hover:text-stone-200 focus:outline-none focus-visible:ring focus-visible:ring-inset">
+                  Panel 1
+                </button>
+              </Tab>
             )}
-          </div>
+          </Tab.List>
 
-          <Tab.Panels>
-            {panels.map((panel) => (
+          {panels.length < 10 && (
+            <CreatePanelButton
+              workspaceId={workspace?.id}
+              panelsCount={workspace?.panels.length}
+            />
+          )}
+        </div>
+
+        <Tab.Panels>
+          {isAuthenticated ? (
+            panels.map((panel) => (
               <Tab.Panel
                 key={panel.id}
                 className="relative z-0 pt-6 focus-visible:outline-none focus-visible:ring"
               >
                 <PanelCell id={panel.id} />
               </Tab.Panel>
-            ))}
-          </Tab.Panels>
-        </Tab.Group>
-      ) : (
-        <Panel />
-      )}
-    </WorkspaceContext.Provider>
-  )
-}
+            ))
+          ) : (
+            <Tab.Panel className="relative z-0 pt-6 focus-visible:outline-none focus-visible:ring">
+              <Panel />
+            </Tab.Panel>
+          )}
+        </Tab.Panels>
+      </Tab.Group>
 
-export const useWorkspace = () => {
-  return useContext(WorkspaceContext)
+      <LoginPopup
+        isOpen={isLoginOpen}
+        setIsOpen={setIsLoginOpen}
+        notification="Log in to change the workspace title."
+      />
+    </>
+  )
 }
 
 export default Workspace

@@ -1,6 +1,5 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
-import isEqual from 'lodash.isequal'
 import type { FindPanelQuery, FindPanelQueryVariables } from 'types/graphql'
 
 import type { CellSuccessProps } from '@redwoodjs/web'
@@ -8,9 +7,10 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
-import { gradients } from 'src/components/BackgroundPicker'
 import Editor from 'src/components/Editor'
+import { usePanel } from 'src/components/PanelProvider'
 import { QUERY } from 'src/components/Workspace/WorkspaceCell'
+import { gradients } from 'src/lib/colors'
 
 const UPDATE_PANEL_MUTATION = gql`
   mutation UpdatePanelMutation($id: String!, $input: UpdatePanelInput!) {
@@ -30,19 +30,6 @@ const UPDATE_PANEL_SETTING_MUTATION = gql`
   }
 `
 
-type PanelDetails = {
-  title?: string
-  code: string
-}
-
-type PanelSettings = {
-  [x: string]: unknown
-  language: string
-  gradientFrom: string
-  gradientTo?: string
-  codeSize: string
-}
-
 export const detailDefaults = {
   title: '',
   code: '',
@@ -55,20 +42,6 @@ export const settingDefaults = {
   codeSize: 'medium',
 }
 
-interface IPanelContext {
-  panelDetails: PanelDetails
-  setPanelDetails: React.Dispatch<React.SetStateAction<PanelDetails>>
-  panelSettings: PanelSettings
-  setPanelSettings: React.Dispatch<React.SetStateAction<PanelSettings>>
-}
-
-const PanelContext = createContext<IPanelContext>({
-  panelDetails: detailDefaults,
-  setPanelDetails: () => {},
-  panelSettings: settingDefaults,
-  setPanelSettings: () => {},
-})
-
 interface IPanel {
   panel?: CellSuccessProps<FindPanelQuery, FindPanelQueryVariables>['panel']
 }
@@ -76,21 +49,8 @@ interface IPanel {
 const Panel = ({ panel }: IPanel) => {
   const { isAuthenticated } = useAuth()
 
-  const defaultDetails = panel
-    ? { title: panel.title, code: panel.code }
-    : detailDefaults
-
-  const defaultSettings = panel?.settings
-    ? {
-        language: panel.settings.language,
-        gradientFrom: panel.settings.gradientFrom,
-        gradientTo: panel.settings.gradientTo,
-        codeSize: panel.settings.codeSize,
-      }
-    : settingDefaults
-
-  const [panelDetails, setPanelDetails] = useState(defaultDetails)
-  const [panelSettings, setPanelSettings] = useState(defaultSettings)
+  const { panelDetails, setPanelDetails, panelSettings, setPanelSettings } =
+    usePanel()
 
   const [updatePanel] = useMutation(UPDATE_PANEL_MUTATION, {
     onError: (error) => {
@@ -116,11 +76,10 @@ const Panel = ({ panel }: IPanel) => {
 
     if (localDetails) setPanelDetails(JSON.parse(localDetails))
     if (localSettings) setPanelSettings(JSON.parse(localSettings))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
 
   useEffect(() => {
-    if (isEqual(defaultDetails, panelDetails)) return
-
     if (isAuthenticated) {
       updatePanel({
         variables: { id: panel.id, input: panelDetails },
@@ -137,8 +96,6 @@ const Panel = ({ panel }: IPanel) => {
   }, [isAuthenticated, panelDetails])
 
   useEffect(() => {
-    if (isEqual(defaultSettings, panelSettings)) return
-
     if (isAuthenticated) {
       updatePanelSetting({
         variables: { id: panel.settings.id, input: panelSettings },
@@ -154,17 +111,7 @@ const Panel = ({ panel }: IPanel) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated, panelSettings])
 
-  return (
-    <PanelContext.Provider
-      value={{ panelDetails, setPanelDetails, panelSettings, setPanelSettings }}
-    >
-      <Editor />
-    </PanelContext.Provider>
-  )
-}
-
-export const usePanel = () => {
-  return useContext(PanelContext)
+  return <Editor />
 }
 
 export default Panel

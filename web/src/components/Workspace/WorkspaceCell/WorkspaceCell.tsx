@@ -7,6 +7,7 @@ import type {
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Workspace from 'src/components/Workspace/Workspace'
+import WorkspaceProvider from 'src/components/WorkspaceProvider'
 
 export const QUERY = gql`
   query FindWorkspaceQuery($id: String!) {
@@ -51,5 +52,9 @@ export const Failure = ({
 export const Success = ({
   workspace,
 }: CellSuccessProps<FindWorkspaceQuery, FindWorkspaceQueryVariables>) => {
-  return <Workspace workspace={workspace} />
+  return (
+    <WorkspaceProvider workspace={workspace}>
+      <Workspace workspace={workspace} />
+    </WorkspaceProvider>
+  )
 }

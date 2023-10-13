@@ -1,6 +1,6 @@
 import { RadioGroup } from '@headlessui/react'
 
-import { usePanel } from 'src/components/Panel/Panel'
+import { usePanel } from 'src/components/PanelProvider'
 import { languages } from 'src/lib/languages'
 
 const LanguagePicker = () => {

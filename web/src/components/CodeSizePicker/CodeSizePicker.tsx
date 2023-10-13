@@ -1,6 +1,6 @@
 import { RadioGroup } from '@headlessui/react'
 
-import { usePanel } from 'src/components/Panel/Panel'
+import { usePanel } from 'src/components/PanelProvider'
 
 export const codeSizes = [
   { class: 'text-xs', label: 'Small', id: 'small' },

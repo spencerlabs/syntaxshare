@@ -17,7 +17,7 @@ import { lintKeymap } from '@codemirror/lint'
 import { searchKeymap } from '@codemirror/search'
 import { EditorState, Transaction, Text } from '@codemirror/state'
 import { oneDark } from '@codemirror/theme-one-dark'
-import { keymap, dropCursor, placeholder } from '@codemirror/view'
+import { keymap, dropCursor } from '@codemirror/view'
 import { EditorView } from 'codemirror'
 
 import { Language } from 'src/lib/languages'
@@ -41,7 +41,7 @@ const useCodeMirror = ({
     if (!editorEl) return
 
     const editorState = EditorState.create({
-      doc: doc || '',
+      doc: doc || '// add your code here',
       extensions: [
         language.lang(),
         oneDark,
@@ -52,7 +52,6 @@ const useCodeMirror = ({
         bracketMatching(),
         closeBrackets(),
         EditorView.lineWrapping,
-        placeholder('// add your code here'),
         keymap.of([
           ...closeBracketsKeymap,
           ...defaultKeymap,

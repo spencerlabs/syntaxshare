@@ -1,9 +1,9 @@
-import { TbCodeCircle } from 'react-icons/tb'
 import type { FindPanelQuery, FindPanelQueryVariables } from 'types/graphql'
 
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
 
 import Panel from 'src/components/Panel/Panel'
+import PanelProvider from 'src/components/PanelProvider'
 
 export const QUERY = gql`
   query FindPanelQuery($id: String!) {
@@ -29,12 +29,8 @@ export const QUERY = gql`
 `
 
 export const Loading = () => (
-  <div className="flex min-h-[75vh] flex-col items-center justify-center px-wrap py-12">
-    <TbCodeCircle
-      className="h-10 w-10 animate-bounce text-emerald-500"
-      aria-hidden
-    />
-    <div className="text-center text-lg font-semibold">Loading panel...</div>
+  <div aria-hidden className="grid grid-cols-1 gap-12 lg:grid-cols-2">
+    <div className="aspect-square animate-pulse bg-stone-800"></div>
   </div>
 )
 
@@ -49,5 +45,9 @@ export const Failure = ({
 export const Success = ({
   panel,
 }: CellSuccessProps<FindPanelQuery, FindPanelQueryVariables>) => {
-  return <Panel panel={panel} />
+  return (
+    <PanelProvider panel={panel}>
+      <Panel panel={panel} />
+    </PanelProvider>
+  )
 }

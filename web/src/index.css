@@ -10,7 +10,7 @@ html, body {
 }
 
 #redwood-app {
-  @apply flex flex-col min-h-full w-full;
+  @apply flex flex-col min-h-full w-full overflow-x-hidden;
 }
 
 a {
@@ -48,7 +48,7 @@ h3, .h3 {
   @apply bg-stone-900 text-stone-200 font-semibold;
 }
 
-#output-view .cm-editor {
+.output-view .cm-editor {
   @apply p-2
 }
 

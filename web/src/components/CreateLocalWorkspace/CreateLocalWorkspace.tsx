@@ -50,7 +50,15 @@ const CreateLocalWorkspace = () => {
     const panel = localStorage.getItem('syntaxshare.panelDetails')
     const panelSetting = localStorage.getItem('syntaxshare.panelSettings')
 
-    if (!workspaceSetting && !panel && !panelSetting) return
+    const code = JSON.parse(panel)?.code
+
+    if (
+      (!workspaceSetting && !panel && !panelSetting) ||
+      !code ||
+      code === '// add your code here'
+    ) {
+      return
+    }
 
     createLocalWorkspace({
       variables: {

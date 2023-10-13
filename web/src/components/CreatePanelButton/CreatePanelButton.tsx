@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { TbCirclePlus } from 'react-icons/tb'
 
 import { navigate, routes } from '@redwoodjs/router'
@@ -5,6 +7,7 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
+import LoginPopup from 'src/components/LoginPopup'
 import { QUERY } from 'src/components/Workspace/WorkspaceCell'
 
 const CREATE_PANEL_MUTATION = gql`
@@ -25,10 +28,10 @@ const CreatePanelButton = ({
   panelsCount,
 }: ICreatePanelButton) => {
   const { isAuthenticated } = useAuth()
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
 
   const [createPanel] = useMutation(CREATE_PANEL_MUTATION, {
     onCompleted: () => {
-      toast.success('New panel created')
       navigate(
         routes.workspace({
           id: workspaceId,
@@ -48,20 +51,27 @@ const CreatePanelButton = ({
       createPanel({
         variables: { input: { workspaceId: workspaceId, code: '' } },
       })
-      return
+    } else {
+      setIsLoginOpen(true)
     }
-
-    alert('You must be logged in to add a new panel')
   }
 
   return (
-    <button
-      className="rounded-t-full p-2 transition-colors hover:bg-stone-700"
-      onClick={onClick}
-    >
-      <TbCirclePlus aria-hidden className="h-5 w-5" />
-      <span className="sr-only">Add panel</span>
-    </button>
+    <>
+      <button
+        className="rounded-t-full p-2 transition-colors hover:bg-stone-700"
+        onClick={onClick}
+      >
+        <TbCirclePlus aria-hidden className="h-5 w-5" />
+        <span className="sr-only">Add panel</span>
+      </button>
+
+      <LoginPopup
+        isOpen={isLoginOpen}
+        setIsOpen={setIsLoginOpen}
+        notification="Log in to add extra panels to the workspace."
+      />
+    </>
   )
 }
 

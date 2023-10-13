@@ -27,7 +27,6 @@ const DeletePanelButton = ({
 }: IDeletePanelButton) => {
   const [deletePanel] = useMutation(DELETE_PANEL_MUTATION, {
     onCompleted: () => {
-      toast.success('Panel deleted')
       navigate(
         routes.workspace(
           panelsCount < 3

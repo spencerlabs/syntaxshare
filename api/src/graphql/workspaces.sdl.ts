@@ -40,6 +40,7 @@ export const schema = gql`
     ): Workspace! @requireAuth
     updateWorkspace(id: String!, input: UpdateWorkspaceInput!): Workspace!
       @requireAuth
+    duplicateWorkspace(id: String!): Workspace! @requireAuth
     deleteWorkspace(id: String!): Workspace! @requireAuth
   }
 `

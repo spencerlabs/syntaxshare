@@ -1,13 +1,10 @@
-import {
-  Link,
-  SkipNavLink,
-  SkipNavContent,
-  routes,
-  useLocation,
-} from '@redwoodjs/router'
+import { useState } from 'react'
+
+import { Link, SkipNavLink, SkipNavContent, routes } from '@redwoodjs/router'
 import { Toaster } from '@redwoodjs/web/toast'
 
 import { useAuth } from 'src/auth'
+import LoginPopup from 'src/components/LoginPopup'
 
 import '@reach/skip-nav/styles.css'
 
@@ -17,13 +14,13 @@ type AppLayoutProps = {
 
 const AppLayout = ({ children }: AppLayoutProps) => {
   const { isAuthenticated, logOut } = useAuth()
-  const { pathname } = useLocation()
+  const [isLoginOpen, setIsLoginOpen] = useState(false)
 
   return (
     <>
       <SkipNavLink contentId="main" />
 
-      <Toaster toastOptions={{ className: 'rw-toast', duration: 4000 }} />
+      <Toaster toastOptions={{ className: 'rw-toast', duration: 3000 }} />
 
       <header className="flex items-center justify-between space-x-4 px-wrap py-2">
         <Link to={routes.home()} className="text-lg font-semibold">
@@ -32,21 +29,24 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
         <nav className="space-x-3 text-sm font-semibold">
           {!isAuthenticated ? (
-            <>
-              {pathname !== '/login' && (
-                <Link
-                  to={routes.login()}
-                  className="block rounded-md bg-emerald-500 px-3 py-2 text-stone-900 hover:bg-emerald-600 hover:text-stone-900"
-                >
-                  Log In or Sign Up
-                </Link>
-              )}
-            </>
+            <button
+              onClick={() => setIsLoginOpen(true)}
+              className="block rounded-md bg-emerald-500 px-3 py-2 text-stone-900 hover:bg-emerald-600 hover:text-stone-900"
+            >
+              Log In or Sign Up
+            </button>
           ) : (
-            <button onClick={logOut}>Log Out</button>
+            <button
+              onClick={logOut}
+              className="transition-colors hover:text-emerald-500"
+            >
+              Log Out
+            </button>
           )}
         </nav>
       </header>
+
+      <LoginPopup isOpen={isLoginOpen} setIsOpen={setIsLoginOpen} />
 
       <SkipNavContent id="main" />
 

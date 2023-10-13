@@ -106,6 +106,92 @@ export const updateWorkspace: MutationResolvers['updateWorkspace'] = ({
   })
 }
 
+export const duplicateWorkspace: MutationResolvers['duplicateWorkspace'] =
+  async ({ id }) => {
+    const userId = context.currentUser.id
+
+    const workspace = await db.workspace.findUnique({
+      where: { id, userId },
+      select: {
+        title: true,
+        visibility: true,
+        settings: {
+          select: {
+            size: true,
+            handle: true,
+            gradientFrom: true,
+            gradientTo: true,
+          },
+        },
+        panels: {
+          select: {
+            title: true,
+            code: true,
+            settings: {
+              select: {
+                language: true,
+                codeSize: true,
+                gradientFrom: true,
+                gradientTo: true,
+              },
+            },
+          },
+        },
+      },
+    })
+
+    if (!workspace) {
+      throw Error(
+        'This workspace does not exist or you do not have access to it.'
+      )
+    }
+
+    const { title, panels, settings, ...rest } = workspace
+
+    const newWorkspace = await db.workspace.create({
+      data: {
+        ...rest,
+        title: `${title} (copy)`,
+        userId,
+        settings: {
+          create: {
+            ...settings,
+          },
+        },
+      },
+    })
+
+    try {
+      for (let i = 0; i < panels.length; i++) {
+        const panel = panels[i]
+
+        const { settings: panelSettings, ...rest } = panel
+
+        await db.panel.create({
+          data: {
+            ...rest,
+            workspaceId: newWorkspace.id,
+            settings: {
+              create: {
+                ...panelSettings,
+              },
+            },
+          },
+        })
+      }
+    } catch (err) {
+      await db.workspace.delete({
+        where: { id: newWorkspace.id },
+      })
+
+      throw Error(err)
+    }
+
+    return db.workspace.findUnique({
+      where: { id: newWorkspace.id },
+    })
+  }
+
 export const deleteWorkspace: MutationResolvers['deleteWorkspace'] = ({
   id,
 }) => {
