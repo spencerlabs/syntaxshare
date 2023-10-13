@@ -39,7 +39,7 @@ const LoginPopup = ({ notification, isOpen, setIsOpen }: LoginPopupProps) => {
       {notification && (
         <div className="mb-6 space-y-2 text-xs">
           <p>{notification}</p>
-          <p>Log in or create a free account!</p>
+          <p>Create a free account or log in!</p>
         </div>
       )}
 
