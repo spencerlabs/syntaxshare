@@ -6,7 +6,7 @@ import { Toaster } from '@redwoodjs/web/toast'
 import { useAuth } from 'src/auth'
 import LoginPopup from 'src/components/LoginPopup'
 
-import '@reach/skip-nav/styles.css'
+import '@redwoodjs/router/skip-nav.css'
 
 type AppLayoutProps = {
   children?: React.ReactNode

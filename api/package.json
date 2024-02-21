@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "@redwoodjs/api": "6.3.2",
-    "@redwoodjs/auth-supabase-api": "6.3.2",
-    "@redwoodjs/graphql-server": "6.3.2",
+    "@redwoodjs/api": "7.0.1",
+    "@redwoodjs/auth-supabase-api": "7.0.1",
+    "@redwoodjs/graphql-server": "7.0.1",
+    "crypto-js": "^4.2.0",
     "nanoid": "3.3.6",
     "nodemailer": "6.9.4"
   },

@@ -24,8 +24,8 @@
     "cleanup": "rm -rf api/node_modules && rm -rf web/node_modules && rm -rf node_modules"
   },
   "devDependencies": {
-    "@redwoodjs/auth-supabase-setup": "6.3.2",
-    "@redwoodjs/core": "6.3.2",
+    "@redwoodjs/auth-supabase-setup": "7.0.1",
+    "@redwoodjs/core": "7.0.1",
     "prettier-plugin-tailwindcss": "^0.4.1"
   },
   "eslintConfig": {
@@ -33,11 +33,10 @@
     "root": true
   },
   "engines": {
-    "node": "=18.x",
-    "yarn": ">=1.15"
+    "node": "=20.x"
   },
   "prisma": {
     "seed": "yarn rw exec seed"
   },
-  "packageManager": "yarn@3.6.0"
+  "packageManager": "yarn@4.0.2"
 }
