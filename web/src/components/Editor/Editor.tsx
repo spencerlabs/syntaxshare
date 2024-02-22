@@ -6,12 +6,12 @@ import { toPng } from 'html-to-image'
 import { TbInfoCircle, TbSourceCode, TbLayoutGrid } from 'react-icons/tb'
 
 import { useAuth } from 'src/auth'
-import BackgroundPicker from 'src/components/BackgroundPicker'
-import CodeSizePicker from 'src/components/CodeSizePicker'
-import LanguagePicker from 'src/components/LanguagePicker'
+import BackgroundPicker from 'src/components/Pickers/BackgroundPicker'
+import CodeSizePicker from 'src/components/Pickers/CodeSizePicker'
+import LanguagePicker from 'src/components/Pickers/LanguagePicker'
 import OutputView from 'src/components/OutputView'
 import { usePanel } from 'src/components/PanelProvider'
-import RatioPicker from 'src/components/RatioPicker'
+import RatioPicker from 'src/components/Pickers/RatioPicker'
 import { useWorkspace } from 'src/components/WorkspaceProvider'
 import { aspectRatios } from 'src/lib/aspectRatios'
 import { languages } from 'src/lib/languages'
@@ -67,7 +67,7 @@ const Editor = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.metaKey && (e.key === 'S' || e.key === 's')) {
+      if (e.metaKey && (e.key === 's')) {
         e.preventDefault()
         onDownload()
       }

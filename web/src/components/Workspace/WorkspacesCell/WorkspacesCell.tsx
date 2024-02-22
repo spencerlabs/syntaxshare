@@ -2,7 +2,7 @@ import type { WorkspacesQuery } from 'types/graphql'
 
 import { Link, routes } from '@redwoodjs/router'
 import type { CellSuccessProps, CellFailureProps } from '@redwoodjs/web'
-import { MetaTags } from '@redwoodjs/web'
+import { Metadata } from '@redwoodjs/web'
 
 import CreateLocalWorkspace from 'src/components/CreateLocalWorkspace'
 import WorkspaceMenu from 'src/components/WorkspaceMenu'
@@ -44,7 +44,7 @@ export const Failure = ({ error }: CellFailureProps) => (
 export const Success = ({ workspaces }: CellSuccessProps<WorkspacesQuery>) => {
   return (
     <>
-      <MetaTags title="Workspaces" />
+      <Metadata title="Workspaces" />
 
       <CreateLocalWorkspace />
 

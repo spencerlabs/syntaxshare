@@ -126,7 +126,7 @@ const BackgroundPicker = () => {
             </div>
           </Tab.Panel>
 
-          <Tab.Panel className="flex space-x-4 text-sm">
+          <Tab.Panel className="space-y-4 sm:space-y-0 sm:flex sm:space-x-4 text-sm">
             <div>
               <label
                 htmlFor="gradientFrom"

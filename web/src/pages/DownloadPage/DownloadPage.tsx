@@ -1,4 +1,4 @@
-import { MetaTags } from '@redwoodjs/web'
+import { Metadata } from '@redwoodjs/web'
 
 import WorkspaceDownloadCell from 'src/components/WorkspaceDownloadCell'
 
@@ -9,7 +9,7 @@ type DownloadPageProps = {
 const DownloadPage = ({ id }: DownloadPageProps) => {
   return (
     <>
-      <MetaTags title="Download" />
+      <Metadata title="Download" />
 
       <WorkspaceDownloadCell id={id} />
     </>

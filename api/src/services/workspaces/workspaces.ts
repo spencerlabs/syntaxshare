@@ -148,9 +148,12 @@ export const duplicateWorkspace: MutationResolvers['duplicateWorkspace'] =
 
     const { title, panels, settings, ...rest } = workspace
 
+    const newId = nanoId()
+
     const newWorkspace = await db.workspace.create({
       data: {
         ...rest,
+        id: newId,
         title: `${title} (copy)`,
         userId,
         settings: {

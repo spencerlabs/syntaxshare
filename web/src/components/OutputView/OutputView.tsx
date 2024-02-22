@@ -2,7 +2,7 @@ import { forwardRef, useEffect, useRef, useState } from 'react'
 
 import { Form, TextField, Label } from '@redwoodjs/forms'
 
-import { codeSizes } from 'src/components/CodeSizePicker'
+import { codeSizes } from 'src/components/Pickers/CodeSizePicker'
 import { usePanel } from 'src/components/PanelProvider'
 import { useWorkspace } from 'src/components/WorkspaceProvider'
 import { useCodeMirror, useCombinedRefs, useWindowResize } from 'src/hooks'

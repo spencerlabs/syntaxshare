@@ -9,7 +9,7 @@ import type {
 
 import { Link, navigate, routes, useLocation } from '@redwoodjs/router'
 import { useMutation } from '@redwoodjs/web'
-import { MetaTags } from '@redwoodjs/web'
+import { Metadata } from '@redwoodjs/web'
 import type { CellSuccessProps } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 
@@ -136,7 +136,7 @@ const Workspace = ({
 
   return (
     <>
-      <MetaTags
+      <Metadata
         title={!isAuthenticated ? 'Share beautiful code snippets' : title}
       />
 
